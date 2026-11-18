@@ -40,7 +40,7 @@ Les alternatives en ligne de commande (yt-dlp) sont puissantes mais inaccessible
 ## 4. Utilisateurs cibles
 
 | Persona | Besoin | Priorité |
-|---|---|---|
+| --- | --- | --- |
 | **Le particulier prudent** | Sauvegarder une vidéo ou un son pour usage personnel sans passer par des sites douteux | Principal |
 | **Le créateur de contenu** | Récupérer ses propres vidéos ou des contenus sous licence libre en haute qualité | Principal |
 | **L'étudiant / enseignant** | Conserver des contenus pédagogiques pour les consulter hors ligne | Secondaire |
@@ -62,7 +62,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.1 Analyse d'URL
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-01 | Un champ de saisie accepte une URL YouTube ; la validation est stricte (domaines `youtube.com`, `youtu.be`, `m.youtube.com`, formats `watch`, `shorts`, `youtu.be/<id>`). | P0 |
 | FR-02 | L'app détecte une URL YouTube valide dans le presse-papiers et propose de l'utiliser, sans jamais l'appliquer automatiquement ; cette détection est désactivable dans les paramètres. | P0 |
 | FR-03 | Une URL invalide affiche un message clair indiquant ce qui est attendu. | P0 |
@@ -71,7 +71,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.2 Prévisualisation
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-10 | Après analyse, l'app affiche la miniature, le titre, la chaîne et la durée formatée (`h:mm:ss`). | P0 |
 | FR-11 | L'analyse affiche un état de chargement et peut être annulée. | P0 |
 | FR-12 | L'app liste uniquement les résolutions réellement disponibles pour la vidéo. | P0 |
@@ -80,7 +80,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.3 Sélecteur de format
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-20 | Choix entre **Vidéo (MP4)** et **Audio seul**. | P0 |
 | FR-21 | En mode vidéo : sélection de résolution parmi 720p, 1080p, 1440p et 4K lorsqu'elles existent ; une qualité préférée est mémorisée. | P0 |
 | FR-22 | En mode audio : **M4A par défaut** (flux AAC natif, sans ré-encodage) ; **MP3 en option**, avec une mention indiquant qu'il implique un ré-encodage. | P0 |
@@ -90,7 +90,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.4 Gestionnaire de téléchargement
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-30 | Barre de progression en temps réel : pourcentage, vitesse, taille téléchargée / totale, temps restant estimé. | P0 |
 | FR-31 | La progression couvre les phases distinctes : téléchargement vidéo, téléchargement audio, fusion/conversion, finalisation. | P0 |
 | FR-32 | **Annulation** à tout moment, avec nettoyage des fichiers temporaires. | P0 |
@@ -104,7 +104,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.5 Gestion des erreurs
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-40 | Messages clairs, en langage courant, avec une action suggérée, pour : lien invalide, vidéo privée / supprimée / restreinte, coupure réseau, espace disque insuffisant, dossier non accessible, échec du moteur, échec de FFmpeg. | P0 |
 | FR-41 | Aucune erreur ne doit faire planter l'app ; toute exception est capturée, journalisée et transformée en message utilisateur. | P0 |
 | FR-42 | Un bouton **Copier les détails techniques** permet de joindre un diagnostic à un signalement. | P1 |
@@ -112,7 +112,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.6 Moteur et mises à jour
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-50 | Le moteur d'extraction principal est **yt-dlp**, derrière l'abstraction `IMediaSource`. **YoutubeExplode** est une implémentation alternative / de repli. | P0 |
 | FR-51 | Le binaire yt-dlp est **mis à jour indépendamment de l'application** (vérification au démarrage, téléchargement en arrière-plan, vérification d'intégrité, retour à la version précédente en cas d'échec). | P0 |
 | FR-52 | FFmpeg est fourni avec l'application (ou téléchargé au premier lancement) ; sa présence et sa version sont vérifiées au démarrage. | P0 |
@@ -121,7 +121,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 6.7 Paramètres
 
 | ID | Exigence | Prio |
-|---|---|---|
+| --- | --- | --- |
 | FR-60 | Paramètres persistants : dossier par défaut, thème (clair / sombre / système), qualité vidéo préférée, format audio préféré, détection du presse-papiers. | P0 |
 | FR-61 | Les paramètres sont stockés dans le dossier de configuration propre à chaque OS, au format JSON versionné. | P0 |
 | FR-62 | Un écran **À propos** affiche la version de l'app, du moteur et de FFmpeg, ainsi que les licences tierces. | P1 |
@@ -151,7 +151,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ### 7.4 Compatibilité
 
 | Plateforme | Versions minimales visées | Architectures |
-|---|---|---|
+| --- | --- | --- |
 | Windows | 10 (22H2) et 11 | x64, arm64 |
 | macOS | 12 et supérieur | x64, arm64 (Apple Silicon) |
 | Linux | Ubuntu 22.04+, Fedora, Debian 12+ | x64 |
@@ -198,7 +198,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ## 11. Risques et mitigations
 
 | Risque | Probabilité | Impact | Mitigation |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Rupture du moteur après un changement côté YouTube | Élevée | Élevé | yt-dlp en moteur principal, mise à jour indépendante du binaire, abstraction `IMediaSource` |
 | Risque juridique / retrait par un hébergeur | Moyenne | Élevé | Positionnement prudent, avertissement, avis juridique, distribution directe |
 | Alertes antivirus / SmartScreen sur un exécutable non signé | Élevée | Moyen | Signature de code, réputation progressive, documentation d'installation |
@@ -229,7 +229,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 ## 14. Feuille de route
 
 | Version | Contenu |
-|---|---|
+| --- | --- |
 | **MVP 1.0** | Périmètre décrit dans ce document |
 | **1.1** | Playlists, file d'attente multi-téléchargements, historique persistant, sous-titres |
 | **1.2** | Support des cookies / vidéos réservées aux membres, métadonnées enrichies, découpage par chapitres |

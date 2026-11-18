@@ -27,7 +27,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 | Jalon | Contenu | Statut |
 |---|---|---|
-| Cadrage | PROJECT, PRD (v0.1), TDD (v0.2), PLAN, JOURNAL | **Terminé** |
+| Cadrage | PROJECT (v0.2), PRD (v0.1), TDD (v0.2), PLAN, JOURNAL | **Terminé** |
 | Design | Maquettes, logo, police, palette, tokens | À faire (prochaine phase) |
 | M0 — Fondations | Solution, DI, logs, CI, thème vide | À faire |
 | M1 — Analyse d'URL | Parseur, saisie, presse-papiers | À faire |
@@ -64,7 +64,6 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 | Point | Depuis | Responsable | Statut |
 |---|---|---|---|
-| Vérifier que `docs/PRD.md` contient bien les dernières modifications faites dans le document en ligne | 2026-11-18 | À définir | Ouvert |
 | Avis juridique avant toute distribution publique | 2026-11-18 | DVA Labs | Ouvert (avant M8) |
 | Identité Git du dépôt (nom et email de l'auteur des commits) | 2026-11-18 | À définir | Ouvert |
 
@@ -73,6 +72,8 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 ## Journal chronologique
 
 ### 2026-11-18
+- **[Armistice + Claude] · Cadrage** — `PROJECT.md` mis à jour (v0.2) : stack et décisions actuelles, feuille de route MVP complétée, liste des documents du projet.
+- **[Armistice + Claude] · Cadrage** — `docs/PRD.md` remplacé par l'export du document en ligne ; contenu identique à la copie précédente (seul le format des tableaux Markdown change).
 - **[Armistice + Claude] · Cadrage** — TDD passé en v0.2 : décisions D-004 à D-009 intégrées (ADR-04, ADR-05, ADR-08, sections 7, 8.5, 19), copie ajoutée dans `docs/TDD.md`.
 - **[Armistice + Claude] · Cadrage** — Création de `PLAN.md` (découpage de M0 à M8 en sous-tâches) et de `JOURNAL.md`.
 - **[Armistice + Claude] · Cadrage** — Réponses aux questions ouvertes du TDD enregistrées (D-004 à D-009).
