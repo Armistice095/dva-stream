@@ -35,6 +35,8 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 
 ## M0 — Fondations (prérequis de M1)
 
+> **État au 2026-11-19 :** M0-01 à M0-08 écrits mais **non cochés** : seul `DvaStream.Core` a pu être compilé (0 avertissement) et sa logique vérifiée ; le reste n'a pas été compilé (pas d'accès à NuGet dans l'environnement de rédaction). Cocher après le premier `dotnet build` / `dotnet test` / CI verts. M0-09 reste à faire par le propriétaire du dépôt GitHub.
+
 - [ ] **M0-01 Solution et projets** — `DvaStream.sln`, `src/DvaStream.Core`, `src/DvaStream.Infrastructure`, `src/DvaStream.App` (Avalonia), `tests/DvaStream.Core.Tests`, `tests/DvaStream.Infrastructure.Tests`, `global.json` (.NET 10). *Fait quand :* `dotnet build` passe. · S
 - [ ] **M0-02 Réglages communs** — `Directory.Build.props` (`Nullable`, `TreatWarningsAsErrors`, analyseurs), `Directory.Packages.props` (versions centralisées), `.editorconfig`. *Fait quand :* build sans avertissement. · S · Dép : M0-01
 - [ ] **M0-03 Hygiène du dépôt** — `.gitignore` .NET, `README.md` (build, structure), modèle de PR et d'issues. *Fait quand :* le dépôt propre après build. · S · Dép : M0-01

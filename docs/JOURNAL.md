@@ -23,13 +23,13 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-11-19 · **Phase actuelle :** Design en cours (logo, palette et police faits ; écran principal en premier jet à valider)
+**Dernière mise à jour :** 2026-11-19 · **Phase actuelle :** M0 en cours (code écrit, à valider par la CI) ; maquettes d'écrans en premier jet à valider
 
 | Jalon | Contenu | Statut |
 |---|---|---|
 | Cadrage | PROJECT (v0.2), PRD (v0.2), TDD (v0.3), PLAN, JOURNAL | **Terminé** |
 | Design | Maquettes, logo, police, palette, tokens | **En cours** : logo, palette, police faits (`maquette/`) ; écran principal et écrans secondaires (premier lancement, Paramètres, Historique, À propos, Licences) en premier jet à valider |
-| M0 — Fondations | Solution, DI, logs, CI, thème vide | À faire |
+| M0 — Fondations | Solution, DI, logs, CI, thème vide | **En cours** : M0-01 à M0-08 écrits (non compilés sauf `Core`), M0-09 (dépôt GitHub) à faire |
 | M1 — Analyse d'URL | Parseur, saisie, presse-papiers | À faire |
 | M2 — Prévisualisation | Métadonnées yt-dlp, carte de prévisualisation | À faire |
 | M3 — Formats | Sélecteur, paramètres persistants, thème | À faire |
@@ -39,7 +39,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 | M7 — Finitions | MP3, historique, À propos, EN, accessibilité | À faire |
 | M8 — Distribution | Velopack, signature, release 1.0 | À faire |
 
-**Prochaine action :** valider (ou corriger) les premiers jets des écrans, dessiner l'état « en pause », trancher la présence d'un réglage de langue, démarrer M0 (tokens d'espacement et de rayons figés, D-016).
+**Prochaine action :** pousser le dépôt sur GitHub (M0-09), lancer `dotnet build` / `dotnet test` ou la CI, corriger ce qui casse, puis cocher M0 ; en parallèle valider les écrans et dessiner l'état « en pause ».
 
 ---
 
@@ -63,6 +63,9 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 | D-014 | 2026-11-18 | Le mot « DVA Stream » du logo est dessiné en Plus Jakarta Sans (Bold + Medium), converti en tracés | Cohérence marque / interface |
 | D-015 | 2026-11-18 | **Ton de l'interface : vouvoiement** (« Collez un lien », « votre vidéo ») dans tous les textes de l'application | Image plus professionnelle ; remplace le tutoiement du premier jet. Maquettes écran principal, écrans secondaires et spécimen de police mis à jour |
 | D-016 | 2026-11-19 | **Tokens de mise en page figés (v1.0)** : espacements 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 ; rayons 4 · 8 · 12 · 16 · pill ; hauteurs de contrôles 32 · 36 · 40 · 44 · 48 · 56 · 60 | Maquettes alignées sur ces valeurs (`maquette/ecrans/tokens-layout.json`, `Tokens.layout.axaml`) ; remplace les valeurs provisoires du premier jet |
+| D-018 | 2026-11-19 | **Avalonia 12 (12.1.6)** au lieu d'Avalonia 11 | Avalonia 12 est la version majeure courante (11.3.x reste maintenue). Remplace D-002 sur ce point. Retour possible en changeant la version dans `Directory.Packages.props` (11.3.23), au prix d'ajustements éventuels |
+| D-019 | 2026-11-19 | Solution au format **`.slnx`** (`DvaStream.slnx`) | Format par défaut du SDK .NET 10, lisible et sans GUID |
+| D-020 | 2026-11-19 | `IPlatformServices` expose `Directories` (`AppDirectories` : config, données, journaux, moteur, temporaires) au lieu de deux chaînes ; calcul par OS dans `Core` (`AppDirectoryResolver`, fonction pure testée) | Testabilité sur n'importe quel OS ; reprend TDD §11 |
 | D-017 | 2026-11-19 | **Action « Pause » intégrée au PRD** (FR-39, P1) : arrêt avec conservation des temporaires, puis « Reprendre » ; annulation possible en pause | Tranche le point ouvert du menu de téléchargement. TDD §8.3 bis, PLAN M5-03 et critères d'acceptation mis à jour |
 
 ---
@@ -80,6 +83,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 ## Journal chronologique
 
 ### 2026-11-19
+- **[Claude] · M0** — Code du jalon M0 écrit : `DvaStream.slnx`, `global.json`, `Directory.Build.props` / `Directory.Packages.props`, `.editorconfig`, `.gitignore`, README, modèles de PR et d'issues (M0-01 à M0-03) ; `Core` (`AppDirectoryResolver`, `IPlatformServices`) ; `Infrastructure` (Serilog, fichiers tournants 14 jours) ; `App` (composition root DI, `MainViewModel`, fenêtre principale, tokens de couleurs et de mise en page issus de `maquette/`, police Plus Jakarta Sans, icône) (M0-04 à M0-06) ; tests (résolution des dossiers, journalisation, architecture) (M0-07) ; `ci.yml` sur 3 OS (M0-08). Vérifié ici : `Core` compile sans avertissement et le comportement de `AppDirectoryResolver` est conforme (banc d'essai équivalent aux tests). **Non vérifié** : le reste n'a pas été compilé (pas d'accès à NuGet) ; versions NuGet d'Avalonia et de CommunityToolkit.Mvvm confirmées sur nuget.org, les autres épinglées prudemment. La première exécution de la CI fait foi ; les cases de M0 ne sont pas cochées. Décisions D-018 à D-020. TDD passé en v0.4.
 - **[Claude] · Cadrage** — Cohérence des documents après la phase Design : PRD passé en v0.2 (FR-39 Pause) ; TDD passé en v0.3 (§3 liste `maquette/`, §9.3 tokens figés au lieu de « provisoires », §19 mis à jour) ; PLAN : M0-06 reprend les tokens et la police de `maquette/`, M3-08 reformulée (habillage final conforme aux maquettes validées) ; `PROJECT.md` aligné sur ces versions. Les constats de l'entrée précédente sont levés.
 - **[Claude] · Dépôt** — Reprise du travail fait hors de cette conversation (archive `dva-stream-v0_9-design`) : `maquette/` (logo, palette, police, écrans, tokens de mise en page), documents mis à jour (D-011 à D-017, FR-39 Pause) ; le tout committé dans le dépôt, `PROJECT.md` aligné sur l'état réel (écrans en premier jet, tokens figés). Constats laissés ouverts : `PLAN.md` M0-06 et `TDD.md` §9.3 parlent encore de tokens « provisoires » alors que palette et tokens de mise en page sont figés ; `TDD.md` §3 ne liste pas `maquette/`.
 - **[Armistice + Claude] · Cadrage** — « Pause » ajoutée au PRD (FR-39, D-017) : exigence P1, critère d'acceptation, section TDD §8.3 bis (arrêt de l'arbre de processus, dossier temporaire conservé, reprise par `--continue`), tâche M5-03 étendue. Point ouvert « Pause » levé. À faire côté maquette : état « en pause » du téléchargement (menu avec « Reprendre »).

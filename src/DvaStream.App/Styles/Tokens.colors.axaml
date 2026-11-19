@@ -1,0 +1,70 @@
+<!-- DVA Stream : couleurs (D-012). Source : maquette/palette/tokens.json. Chaque token existe en Color et en SolidColorBrush ;
+     le texte sur fond clair utilise AccentTextBrush, jamais AccentBrush. -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Light">
+      <Color x:Key="BgColor">#F5F6FB</Color>
+      <SolidColorBrush x:Key="BgBrush" Color="#F5F6FB" />
+      <Color x:Key="SurfaceColor">#FFFFFF</Color>
+      <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+      <Color x:Key="SurfaceAltColor">#ECEEF8</Color>
+      <SolidColorBrush x:Key="SurfaceAltBrush" Color="#ECEEF8" />
+      <Color x:Key="BorderColor">#DDE1F0</Color>
+      <SolidColorBrush x:Key="BorderBrush" Color="#DDE1F0" />
+      <Color x:Key="TextPrimaryColor">#0E1330</Color>
+      <SolidColorBrush x:Key="TextPrimaryBrush" Color="#0E1330" />
+      <Color x:Key="TextMutedColor">#555C7D</Color>
+      <SolidColorBrush x:Key="TextMutedBrush" Color="#555C7D" />
+      <Color x:Key="PrimaryColor">#3B47E0</Color>
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#3B47E0" />
+      <Color x:Key="PrimaryHoverColor">#2F3AC4</Color>
+      <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#2F3AC4" />
+      <Color x:Key="OnPrimaryColor">#FFFFFF</Color>
+      <SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF" />
+      <Color x:Key="AccentColor">#22D3C5</Color>
+      <SolidColorBrush x:Key="AccentBrush" Color="#22D3C5" />
+      <Color x:Key="OnAccentColor">#0E1330</Color>
+      <SolidColorBrush x:Key="OnAccentBrush" Color="#0E1330" />
+      <Color x:Key="AccentTextColor">#0A7F77</Color>
+      <SolidColorBrush x:Key="AccentTextBrush" Color="#0A7F77" />
+      <Color x:Key="DangerColor">#CF2A47</Color>
+      <SolidColorBrush x:Key="DangerBrush" Color="#CF2A47" />
+      <Color x:Key="SuccessColor">#13794A</Color>
+      <SolidColorBrush x:Key="SuccessBrush" Color="#13794A" />
+      <Color x:Key="WarningColor">#9A5B00</Color>
+      <SolidColorBrush x:Key="WarningBrush" Color="#9A5B00" />
+    </ResourceDictionary>
+    <ResourceDictionary x:Key="Dark">
+      <Color x:Key="BgColor">#0A0E24</Color>
+      <SolidColorBrush x:Key="BgBrush" Color="#0A0E24" />
+      <Color x:Key="SurfaceColor">#121735</Color>
+      <SolidColorBrush x:Key="SurfaceBrush" Color="#121735" />
+      <Color x:Key="SurfaceAltColor">#1B2150</Color>
+      <SolidColorBrush x:Key="SurfaceAltBrush" Color="#1B2150" />
+      <Color x:Key="BorderColor">#2A3166</Color>
+      <SolidColorBrush x:Key="BorderBrush" Color="#2A3166" />
+      <Color x:Key="TextPrimaryColor">#F2F4FF</Color>
+      <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F2F4FF" />
+      <Color x:Key="TextMutedColor">#A3AACF</Color>
+      <SolidColorBrush x:Key="TextMutedBrush" Color="#A3AACF" />
+      <Color x:Key="PrimaryColor">#7482FF</Color>
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#7482FF" />
+      <Color x:Key="PrimaryHoverColor">#8A96FF</Color>
+      <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#8A96FF" />
+      <Color x:Key="OnPrimaryColor">#0A0E24</Color>
+      <SolidColorBrush x:Key="OnPrimaryBrush" Color="#0A0E24" />
+      <Color x:Key="AccentColor">#22D3C5</Color>
+      <SolidColorBrush x:Key="AccentBrush" Color="#22D3C5" />
+      <Color x:Key="OnAccentColor">#0E1330</Color>
+      <SolidColorBrush x:Key="OnAccentBrush" Color="#0E1330" />
+      <Color x:Key="AccentTextColor">#3EE0D3</Color>
+      <SolidColorBrush x:Key="AccentTextBrush" Color="#3EE0D3" />
+      <Color x:Key="DangerColor">#FF7088</Color>
+      <SolidColorBrush x:Key="DangerBrush" Color="#FF7088" />
+      <Color x:Key="SuccessColor">#43DC9B</Color>
+      <SolidColorBrush x:Key="SuccessBrush" Color="#43DC9B" />
+      <Color x:Key="WarningColor">#F5B84B</Color>
+      <SolidColorBrush x:Key="WarningBrush" Color="#F5B84B" />
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

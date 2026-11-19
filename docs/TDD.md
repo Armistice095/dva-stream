@@ -1,6 +1,6 @@
 # TDD — DVA Stream
 
-**DVA Labs** · Technical Design Document · Version 0.3 (brouillon) · Référence : PRD v0.2
+**DVA Labs** · Technical Design Document · Version 0.4 (brouillon) · Référence : PRD v0.2
 
 ## 1. Objet et périmètre
 
@@ -8,14 +8,14 @@ Ce document décrit **comment** construire le MVP 1.0 défini dans le PRD : déc
 
 Les points marqués **[À valider]** sont des hypothèses à confirmer, idéalement par un spike technique (section 16) avant de coder le composant concerné.
 
-**Version 0.3** : ajout de la pause (FR-39, §8.3 bis), de la police Plus Jakarta Sans et des tokens figés (D-012, D-013, D-016) ; sources de design dans `maquette/`. **Version 0.2** : les décisions D-004 à D-009 du JOURNAL (FFmpeg embarqué, repli YoutubeExplode reporté en v1.1, CliWrap accepté, nom de fichier = Titre, dépôt GitHub privé) sont intégrées ; la section 19 les récapitule.
+**Version 0.4** : Avalonia 12 (D-018), solution `.slnx` (D-019), `IPlatformServices.Directories` (D-020). **Version 0.3** : ajout de la pause (FR-39, §8.3 bis), de la police Plus Jakarta Sans et des tokens figés (D-012, D-013, D-016) ; sources de design dans `maquette/`. **Version 0.2** : les décisions D-004 à D-009 du JOURNAL (FFmpeg embarqué, repli YoutubeExplode reporté en v1.1, CliWrap accepté, nom de fichier = Titre, dépôt GitHub privé) sont intégrées ; la section 19 les récapitule.
 
 ## 2. Décisions techniques (ADR synthétiques)
 
 | ID | Décision | Raison | Alternative écartée |
 |---|---|---|---|
 | ADR-01 | **.NET 10 (LTS)**, C# 14, `Nullable` activé, `TreatWarningsAsErrors` | Support long terme, performances, un seul runtime sur 3 OS | .NET 8 (fin de support proche) |
-| ADR-02 | **Avalonia 11** + thème Fluent, MVVM via `CommunityToolkit.Mvvm` | Rendu identique sur les 3 OS, source generators, peu de code répétitif | MAUI (pas de Linux), WPF (Windows seul) |
+| ADR-02 | **Avalonia 12** (12.1.x, D-018) + thème Fluent, MVVM via `CommunityToolkit.Mvvm` | Rendu identique sur les 3 OS, source generators, peu de code répétitif | MAUI (pas de Linux), WPF (Windows seul) |
 | ADR-03 | **yt-dlp** comme moteur principal, exécuté en **processus externe** | Maintenu très activement, corrige les ruptures en quelques jours, mise à jour sans recompiler l'app | Bibliothèque seule (casse à chaque changement de YouTube) |
 | ADR-04 | **YoutubeExplode** en implémentation de repli derrière la même abstraction | Reporté en v1.1 (D-005). Pas de binaire externe, utile si yt-dlp est indisponible | Le livrer dès le MVP (écarté pour réduire le périmètre) |
 | ADR-05 | **FFmpeg embarqué** dans l'installeur, appelé en processus externe (décision D-004) | Fonctionne hors ligne dès l'installation ; lancement par processus = pas de liaison, donc obligations de licence allégées | Téléchargement au premier lancement (installeur plus léger mais 1er lancement dépendant du réseau) |
@@ -51,7 +51,7 @@ dva-stream/
 ├── Directory.Build.props      options communes (nullable, analyseurs, versions)
 ├── Directory.Packages.props   gestion centralisée des versions NuGet
 ├── global.json                version du SDK .NET
-└── DvaStream.sln
+└── DvaStream.slnx             solution (format .slnx, D-019)
 ```
 
 ### Règles de dépendances
@@ -165,8 +165,7 @@ public interface IPlatformServices
     void RevealInFolder(string path);
     void OpenFile(string path);
     void NotifyDone(string title, string message);
-    string ConfigDirectory { get; }
-    string DataDirectory { get; }
+    AppDirectories Directories { get; }   // ConfigDirectory, DataDirectory, LogsDirectory, EngineDirectory, TempDirectory (D-020)
 }
 ```
 

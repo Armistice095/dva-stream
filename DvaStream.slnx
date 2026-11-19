@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DvaStream.Core/DvaStream.Core.csproj" />
+    <Project Path="src/DvaStream.Infrastructure/DvaStream.Infrastructure.csproj" />
+    <Project Path="src/DvaStream.App/DvaStream.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DvaStream.Core.Tests/DvaStream.Core.Tests.csproj" />
+    <Project Path="tests/DvaStream.Infrastructure.Tests/DvaStream.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

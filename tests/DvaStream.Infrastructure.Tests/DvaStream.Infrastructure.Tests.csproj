@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DvaStream.Core\DvaStream.Core.csproj" />
+    <ProjectReference Include="..\..\src\DvaStream.Infrastructure\DvaStream.Infrastructure.csproj" />
+    <!-- Référencé pour le test d'architecture : l'assembly App doit être présente dans le dossier de sortie. -->
+    <ProjectReference Include="..\..\src\DvaStream.App\DvaStream.App.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

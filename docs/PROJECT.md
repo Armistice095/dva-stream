@@ -1,11 +1,11 @@
 # PROJECT.md — DVA Stream (by DVA Labs)
 
-> Fiche d'identité du projet. Version 0.2 — mise à jour pour refléter les décisions du PRD v0.2 et du TDD v0.3. Détails dans les documents listés en section 6 ; l'avancement est dans `JOURNAL.md`.
+> Fiche d'identité du projet. Version 0.2 — mise à jour pour refléter les décisions du PRD v0.2 et du TDD v0.4. Détails dans les documents listés en section 6 ; l'avancement est dans `JOURNAL.md`.
 
 ## 1. Identité
 * **Entreprise :** DVA Labs
 * **Produit :** DVA Stream
-* **Statut :** cadrage terminé (PRD v0.2, TDD v0.3) ; phase Design en cours (logo, palette, police et tokens de mise en page figés dans `maquette/` ; écrans en premier jet à valider), puis jalon M0
+* **Statut :** cadrage terminé (PRD v0.2, TDD v0.4) ; phase Design en cours (logo, palette, police et tokens de mise en page figés dans `maquette/` ; écrans en premier jet à valider), puis jalon M0
 
 ## 2. Présentation du Projet
 **DVA Stream** est une application de bureau multiplateforme (Windows, macOS, Linux) permettant de télécharger des vidéos et d'extraire des pistes audio depuis YouTube à partir d'une simple URL, de façon locale, sûre et sans publicité.
@@ -17,7 +17,7 @@
 
 ## 4. Stack Technique & Architecture
 * **Langage & Runtime :** .NET 10 (LTS)
-* **Framework UI :** Avalonia UI 11 (thème Fluent), MVVM avec `CommunityToolkit.Mvvm`, injection de dépendances `Microsoft.Extensions.DependencyInjection`
+* **Framework UI :** Avalonia UI 12 (thème Fluent), MVVM avec `CommunityToolkit.Mvvm`, injection de dépendances `Microsoft.Extensions.DependencyInjection`
 * **Moteur d'extraction & téléchargement :** **`yt-dlp`** (moteur principal, processus externe, mis à jour indépendamment de l'application) et **`FFmpeg`** (embarqué, pour la fusion vidéo/audio et le MP3). `YoutubeExplode` est reporté en v1.1 comme moteur de repli, derrière l'abstraction `IMediaSource`.
 * **Outils :** `CliWrap` (processus externes), Serilog (journalisation), xUnit + NSubstitute (tests), Velopack (installation et mises à jour), GitHub Actions (CI sur 3 OS)
 * **Solution en 3 projets :** `DvaStream.Core` (domaine, sans dépendance UI), `DvaStream.Infrastructure` (moteurs, fichiers, paramètres), `DvaStream.App` (Avalonia)

@@ -1,0 +1,28 @@
+# Build
+bin/
+obj/
+out/
+publish/
+artifacts/
+
+# IDE
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.DotSettings.user
+
+# Tests et couverture
+TestResults/
+coverage/
+*.coverage
+*.trx
+
+# Binaires tiers (récupérés par script, jamais commités)
+tools/bin/
+engine/
+
+# Système
+.DS_Store
+Thumbs.db
