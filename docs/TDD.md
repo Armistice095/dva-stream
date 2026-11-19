@@ -67,7 +67,8 @@ Ces règles sont vérifiées automatiquement par un test d'architecture (section
 ## 4. Modèle de domaine (`DvaStream.Core`)
 
 ```csharp
-public sealed record VideoId(string Value);
+// 11 caractères A-Z a-z 0-9 _ - ; créable uniquement par VideoId.TryCreate(string?, out VideoId?) (D-022)
+public sealed record VideoId { public string Value { get; } /* … */ }
 
 public sealed record MediaInfo(
     VideoId Id,
@@ -118,7 +119,7 @@ public sealed record DownloadProgress(
 ```csharp
 public interface IUrlParser
 {
-    UrlParseResult Parse(string input);   // Valid(VideoId) | Playlist | Invalid(reason)
+    UrlParseResult Parse(string? input);   // Valid(VideoId) | Playlist(PlaylistId, VideoId?) | Invalid(UrlInvalidReason)
 }
 
 public interface IMediaSource
