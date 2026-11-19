@@ -1,0 +1,32 @@
+<!-- DVA Stream — mise en page (v1.0 figée le 2026-11-19, D-016). Brouillon non compilé pour M0-06 / M3-08. Source : tokens-layout.json -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Espacements (base 4 px, numérotés en multiples de 4) -->
+  <x:Double x:Key="Space1">4</x:Double>
+  <x:Double x:Key="Space2">8</x:Double>
+  <x:Double x:Key="Space3">12</x:Double>
+  <x:Double x:Key="Space4">16</x:Double>
+  <x:Double x:Key="Space5">20</x:Double>
+  <x:Double x:Key="Space6">24</x:Double>
+  <x:Double x:Key="Space8">32</x:Double>
+  <x:Double x:Key="Space10">40</x:Double>
+  <x:Double x:Key="Space12">48</x:Double>
+  <x:Double x:Key="Space16">64</x:Double>
+  <!-- Rayons -->
+  <CornerRadius x:Key="RadiusXs">4</CornerRadius>
+  <CornerRadius x:Key="RadiusSm">8</CornerRadius>
+  <CornerRadius x:Key="RadiusMd">12</CornerRadius>
+  <CornerRadius x:Key="RadiusLg">16</CornerRadius>
+  <CornerRadius x:Key="RadiusPill">999</CornerRadius>
+  <!-- Hauteurs de contrôles -->
+  <x:Double x:Key="ButtonCompactHeight">32</x:Double>
+  <x:Double x:Key="IconButtonHeight">36</x:Double>
+  <x:Double x:Key="ButtonHeight">40</x:Double>
+  <x:Double x:Key="SelectHeight">44</x:Double>
+  <x:Double x:Key="SegmentedHeight">44</x:Double>
+  <x:Double x:Key="ButtonPrimaryLargeHeight">48</x:Double>
+  <x:Double x:Key="UrlFieldHeight">56</x:Double>
+  <x:Double x:Key="SettingsRowHeight">60</x:Double>
+  <x:Double x:Key="TopBarHeight">56</x:Double>
+  <x:Double x:Key="StatusBarHeight">32</x:Double>
+  <x:Double x:Key="ContentColumnWidth">640</x:Double>
+</ResourceDictionary>

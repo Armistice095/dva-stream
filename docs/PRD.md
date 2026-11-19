@@ -52,7 +52,7 @@ Les alternatives en ligne de commande (yt-dlp) sont puissantes mais inaccessible
 2. L'app analyse l'URL et affiche la **prévisualisation** : miniature, titre, chaîne, durée.
 3. L'utilisateur choisit **Vidéo (MP4)** + résolution, ou **Audio** (M4A par défaut, MP3 en option).
 4. L'utilisateur confirme le dossier de destination (mémorisé par défaut) et lance le téléchargement.
-5. La **progression** s'affiche en temps réel, avec possibilité d'annuler.
+5. La **progression** s'affiche en temps réel, avec possibilité de mettre en pause ou d'annuler.
 6. À la fin, un bouton **Ouvrir le dossier** / **Afficher le fichier** est proposé.
 
 ## 6. Exigences fonctionnelles (MVP)
@@ -100,6 +100,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 | FR-36 | **Gestion des conflits de noms** : suffixe automatique (`Titre (1).mp4`) ; jamais d'écrasement silencieux. | P0 |
 | FR-37 | À la fin : actions **Ouvrir le fichier** et **Afficher dans le dossier**, ainsi qu'une notification système. | P0 |
 | FR-38 | Historique des téléchargements de la session (liste simple avec statut). Un historique persistant est P2. | P1 |
+| FR-39 | **Pause et reprise manuelle** : action « Pause » dans le menu du téléchargement en cours ; le téléchargement s'interrompt en conservant les fichiers temporaires, l'action devient « Reprendre » et continue là où il s'est arrêté, sans repartir de zéro. L'annulation (FR-32) reste disponible à tout moment, y compris en pause. | P1 |
 
 ### 6.5 Gestion des erreurs
 
@@ -221,6 +222,7 @@ Priorités : **P0** = indispensable au MVP, **P1** = important, **P2** = souhait
 - [ ] Un téléchargement MP4 en 1080p aboutit à un fichier lisible avec image et son (fusion réussie).
 - [ ] Un téléchargement M4A et un téléchargement MP3 aboutissent à des fichiers lisibles.
 - [ ] L'annulation supprime tous les fichiers temporaires.
+- [ ] La pause conserve les fichiers temporaires et « Reprendre » poursuit le téléchargement sans repartir de zéro (FR-39).
 - [ ] La progression affiche pourcentage, vitesse et temps restant, et reste fluide.
 - [ ] Le moteur yt-dlp se met à jour sans réinstaller l'application.
 - [ ] Les thèmes clair et sombre sont complets, sans élément illisible.

@@ -1,0 +1,60 @@
+{
+  "family": "Plus Jakarta Sans",
+  "files": [
+    "Regular(400)",
+    "Medium(500)",
+    "SemiBold(600)",
+    "Bold(700)"
+  ],
+  "scale": [
+    {
+      "name": "Display",
+      "size": "32",
+      "lineHeight": "40",
+      "weight": "700",
+      "tracking": "-0.02em",
+      "usage": "Titre d'écran, écran d'accueil"
+    },
+    {
+      "name": "Title",
+      "size": "20",
+      "lineHeight": "28",
+      "weight": "600",
+      "tracking": "-0.01em",
+      "usage": "Titre de carte, titre de vidéo"
+    },
+    {
+      "name": "Subtitle",
+      "size": "16",
+      "lineHeight": "24",
+      "weight": "600",
+      "tracking": "0",
+      "usage": "Sections, en-têtes de paramètres"
+    },
+    {
+      "name": "Body",
+      "size": "14",
+      "lineHeight": "20",
+      "weight": "400",
+      "tracking": "0",
+      "usage": "Texte courant, libellés"
+    },
+    {
+      "name": "BodyStrong",
+      "size": "14",
+      "lineHeight": "20",
+      "weight": "600",
+      "tracking": "0",
+      "usage": "Boutons, valeurs importantes"
+    },
+    {
+      "name": "Caption",
+      "size": "12",
+      "lineHeight": "16",
+      "weight": "500",
+      "tracking": "0",
+      "usage": "Chaîne, durée, vitesse, aide"
+    }
+  ],
+  "numerals": "tabular (tnum) pour pourcentage, vitesse, durée, tailles"
+}

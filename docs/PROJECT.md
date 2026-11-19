@@ -5,7 +5,7 @@
 ## 1. Identité
 * **Entreprise :** DVA Labs
 * **Produit :** DVA Stream
-* **Statut :** phase de cadrage terminée (documents v0.1/v0.2) ; prochaine étape : phase Design (maquettes, logo, police, palette), puis jalon M0
+* **Statut :** cadrage terminé (documents v0.1/v0.2) ; phase Design en cours (logo, palette, police et tokens de mise en page figés dans `maquette/` ; écrans en premier jet à valider), puis jalon M0
 
 ## 2. Présentation du Projet
 **DVA Stream** est une application de bureau multiplateforme (Windows, macOS, Linux) permettant de télécharger des vidéos et d'extraire des pistes audio depuis YouTube à partir d'une simple URL, de façon locale, sûre et sans publicité.
@@ -21,7 +21,7 @@
 * **Moteur d'extraction & téléchargement :** **`yt-dlp`** (moteur principal, processus externe, mis à jour indépendamment de l'application) et **`FFmpeg`** (embarqué, pour la fusion vidéo/audio et le MP3). `YoutubeExplode` est reporté en v1.1 comme moteur de repli, derrière l'abstraction `IMediaSource`.
 * **Outils :** `CliWrap` (processus externes), Serilog (journalisation), xUnit + NSubstitute (tests), Velopack (installation et mises à jour), GitHub Actions (CI sur 3 OS)
 * **Solution en 3 projets :** `DvaStream.Core` (domaine, sans dépendance UI), `DvaStream.Infrastructure` (moteurs, fichiers, paramètres), `DvaStream.App` (Avalonia)
-* **Direction Artistique & UI :** Interface épurée, moderne et corporate, privilégiant une typographie stylisée et lisible, des espaces bien structurés et un mode sombre/clair soigné. Police, palette et logo : à définir pendant la phase Design.
+* **Direction Artistique & UI :** Interface épurée, moderne et corporate, privilégiant une typographie stylisée et lisible, des espaces bien structurés et un mode sombre/clair soigné. Logo, palette et police définis (voir `maquette/` et `docs/JOURNAL.md` D-011 à D-014) : logo « D » + « play », accent aqua `#22D3C5` sur indigo, police Plus Jakarta Sans.
 * **Distribution :** directe uniquement (site, GitHub Releases) ; stores exclus. Dépôt GitHub privé pendant la conception ; avis juridique avant toute distribution publique.
 
 ## 5. Feuille de Route (MVP - Version 1.0)
@@ -45,5 +45,6 @@ Hors MVP (v1.1 et après) : playlists, file d'attente multi-téléchargements, h
 | `docs/TDD.md` | Conception technique : décisions (ADR), structure, contrats, flux, tests, CI, spikes |
 | `docs/PLAN.md` | Plan d'implémentation M0 à M8 découpé en sous-tâches cochables |
 | `docs/JOURNAL.md` | Journal vivant : état d'avancement, décisions, blocages, historique du travail |
+| `maquette/` | Livrables de la phase Design : logo, palette, police, tokens de mise en page, écrans (premier jet) |
 
 Règle : toute personne qui travaille sur le projet consigne ce qu'elle fait dans `JOURNAL.md` au fur et à mesure et coche les tâches dans `PLAN.md`.

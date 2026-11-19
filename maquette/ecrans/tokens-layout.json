@@ -1,0 +1,85 @@
+{
+  "_note": "Tokens de mise en page DVA Stream, version 1.0 FIGÉE le 2026-11-19 (décision D-016). Les maquettes de maquette/ecrans/ n'utilisent plus que ces valeurs. Base de la tâche M3-08.",
+  "version": "1.0",
+  "window": {
+    "width": 880,
+    "height": 640,
+    "minimum": true
+  },
+  "contentColumn": 640,
+  "spacing": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64
+  },
+  "spacingUsage": {
+    "1 (4)": "micro-écart : icône/texte serrés, padding des badges, retrait des segments",
+    "2 (8)": "écart entre éléments liés : libellé/champ, chips, items de menu",
+    "3 (12)": "écart entre contrôles voisins : boutons, champ + bouton, lignes d'une carte",
+    "4 (16)": "padding standard des cartes et lignes ; écart vertical entre blocs",
+    "5 (20)": "marges latérales des barres haute et basse ; padding des gros boutons",
+    "6 (24)": "respiration en haut de page ; padding de zones aérées",
+    "8 (32)": "padding de la carte de premier lancement ; grands blocs",
+    "10 (40)": "réservé (marges de fenêtre élargie)",
+    "12 (48)": "réservé (états vides)",
+    "16 (64)": "décalage de l'illustration des états vides"
+  },
+  "radius": {
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "pill": 999
+  },
+  "radiusUsage": {
+    "xs (4)": "badge de durée, case à cocher, segment interne d'un contrôle segmenté",
+    "sm (8)": "boutons, boutons-icônes, items de menu, vignettes, menu déroulant des Paramètres",
+    "md (12)": "champ du lien, cartes, listes groupées, liste déroulante, contrôle segmenté, menu contextuel, case d'acceptation",
+    "lg (16)": "carte du premier lancement",
+    "pill": "chips, barres de progression, interrupteur, pastilles, cercles (999 = demi-hauteur)"
+  },
+  "radiusRule": "rayon interne = rayon externe − retrait (ex. segment 12 − 4 = 8 ; ligne de liste 12 − 1 de bordure = 11). Le rayon de la fenêtre est celui du système d'exploitation, hors tokens.",
+  "controlHeight": {
+    "buttonCompact": 32,
+    "iconButton": 36,
+    "button": 40,
+    "select": 44,
+    "segmented": 44,
+    "buttonPrimaryLarge": 48,
+    "urlField": 56,
+    "settingsRow": 60
+  },
+  "topBar": 56,
+  "statusBar": 32,
+  "icon": {
+    "sm": 16,
+    "md": 20,
+    "lg": 24
+  },
+  "thumbnail": {
+    "preview": [
+      176,
+      99
+    ],
+    "download": [
+      128,
+      72
+    ],
+    "compact": [
+      112,
+      63
+    ]
+  },
+  "exceptions": [
+    "Compensations optiques à valeur négative : -2, -4, -6, -8 (alignement visuel des boutons-icônes sur le bord du contenu)",
+    "Bordure d'erreur du champ : padding gauche 15 au lieu de 16 pour compenser la bordure de 2 px",
+    "Hors tokens : marges et grille de la planche de présentation des maquettes"
+  ]
+}

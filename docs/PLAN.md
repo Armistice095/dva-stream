@@ -13,7 +13,7 @@ Plan d'implémentation du MVP 1.0, découpé en jalons puis en sous-tâches. Ré
 ## Décisions qui cadrent ce plan
 
 - FFmpeg **embarqué** ; repli YoutubeExplode **reporté en v1.1** ; CliWrap **accepté** ; nom de fichier de sortie = **Titre** ; dépôt GitHub **privé** pendant la conception.
-- La **phase Design** (maquettes, logo, police, palette) a lieu après les documents et avant l'habillage final. Jusqu'à son terme, les tokens de thème sont **provisoires** (M0-06) ; l'habillage définitif est la tâche M3-08.
+- Logo, palette et police sont **décidés** (D-011 à D-013, dossier `maquette/`) ; restent les maquettes d'écrans. La **phase Design** (maquettes, logo, police, palette) a lieu après les documents et avant l'habillage final. Jusqu'à son terme, les tokens de thème sont **provisoires** (M0-06) ; l'habillage définitif est la tâche M3-08.
 
 ## Vue d'ensemble
 
@@ -24,7 +24,7 @@ Plan d'implémentation du MVP 1.0, découpé en jalons puis en sous-tâches. Ré
 | M2 | Prévisualisation | FR-10 à 13, FR-50 | 13 |
 | M3 | Formats et paramètres | FR-20 à 22, FR-60/61 | 10 |
 | M4 | Téléchargement | FR-23, 30, 31, 34 à 37, 52 | 13 |
-| M5 | Contrôle et robustesse | FR-32, 33, 40 à 42 | 9 |
+| M5 | Contrôle et robustesse | FR-32, 33, 39, 40 à 42 | 9 |
 | M6 | Moteur à jour | FR-51, 53 | 9 |
 | M7 | Finitions | FR-04, 22 (MP3), 38, 62 | 8 |
 | M8 | Distribution | PRD §13 | 7 |
@@ -124,17 +124,17 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 
 ---
 
-## M5 — Contrôle et robustesse (FR-32, FR-33, FR-40 à FR-42)
+## M5 — Contrôle et robustesse (FR-32, FR-33, FR-39, FR-40 à FR-42)
 
 - [ ] **M5-01 Annulation de l'arbre de processus (spike S3)** — arrêt de yt-dlp **et** de FFmpeg sur les 3 OS. *Fait quand :* aucun processus orphelin après annulation. · L · Dép : M4-05
 - [ ] **M5-02 Nettoyage des temporaires** — suppression à l'annulation ; purge des dossiers orphelins au démarrage (délai de 7 jours). *Fait quand :* tests sur dossiers simulés. · M · Dép : M5-01
-- [ ] **M5-03 Reprise (FR-33)** — nommage déterministe du dossier temporaire, `--continue`, bouton Reprendre après coupure. *Fait quand :* un téléchargement coupé en cours reprend sans repartir de zéro. · L · Dép : M5-02
+- [ ] **M5-03 Reprise et pause (FR-33, FR-39)** — nommage déterministe du dossier temporaire, `--continue`, bouton Reprendre après coupure ; action « Pause » / « Reprendre » du menu du téléchargement (état `Paused`, temporaires conservés, annulation possible en pause). *Fait quand :* un téléchargement coupé ou mis en pause reprend sans repartir de zéro. · L · Dép : M5-02
 - [ ] **M5-04 Taxonomie complète** — tous les `ErrorKind` du TDD §10.1 avec clés de ressources (message + action suggérée) en FR et EN. *Fait quand :* aucun `ErrorKind` sans message. · M · Dép : M2-07
 - [ ] **M5-05 `YtDlpErrorMapper` complet** — disque plein, dossier non inscriptible, réseau, délai, limitation de débit, échec FFmpeg. *Fait quand :* tests sur sorties enregistrées. · M · Dép : M5-04
 - [ ] **M5-06 Contrôles préalables** — espace disque suffisant, dossier inscriptible, avant de lancer. *Fait quand :* messages clairs sans lancer le moteur. · S · Dép : M5-04
 - [ ] **M5-07 Gestionnaire global (FR-41)** — `AppDomain`, `TaskScheduler`, `Dispatcher` : journalisation et message sûr, jamais de plantage. *Fait quand :* une exception volontaire est affichée sans fermer l'app. · M · Dép : M5-04
 - [ ] **M5-08 Détails techniques (FR-42)** — bouton « Copier les détails techniques » (versions, OS, erreur, extrait du journal, sans donnée personnelle hors URL). *Fait quand :* le contenu copié est vérifié. · S · Dép : M5-07
-- [ ] **M5-09 Clôture** — tests de scénarios d'échec ; vérification FR-32, 33, 40 à 42 ; `PLAN.md` et `JOURNAL.md` à jour. · M · Dép : toutes
+- [ ] **M5-09 Clôture** — tests de scénarios d'échec ; vérification FR-32, 33, 39, 40 à 42 ; `PLAN.md` et `JOURNAL.md` à jour. · M · Dép : toutes
 
 **Fin de M5 :** aucune erreur ne plante l'app ; annulation et reprise fiables.
 

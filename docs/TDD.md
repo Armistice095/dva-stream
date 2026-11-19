@@ -233,6 +233,13 @@ Poids indicatifs pour `OverallPercent` en vidéo fusionnée : vidéo 0 à 70 %, 
 2. CliWrap termine le processus yt-dlp **et ses enfants** (FFmpeg) : arrêt de l'arbre de processus.
 3. Le dossier temporaire du job est supprimé ; l'état passe à `Cancelled`.
 
+### 8.3 bis Pause et reprise manuelle (FR-39)
+
+1. « Pause » arrête l'arbre de processus (yt-dlp et FFmpeg) comme à l'annulation, mais **sans** supprimer le dossier temporaire du job ; l'état passe à `Paused`.
+2. « Reprendre » relance yt-dlp avec `--continue` sur le même dossier temporaire (même mécanique que la reprise, section 8.4) ; l'état repasse à `Downloading`.
+3. « Annuler » reste possible en `Paused` : le dossier temporaire est alors supprimé (section 8.3).
+4. Ce n'est pas une suspension de processus (`SIGSTOP`) : l'approche par arrêt et reprise est identique sur les 3 OS. La vitesse et le temps restant sont recalculés à la reprise.
+
 ### 8.4 Reprise (FR-33)
 
 - Les fichiers `.part` de yt-dlp restent dans le dossier temporaire du job, nommé de façon déterministe (identifiant vidéo + options).
@@ -277,7 +284,7 @@ DvaStream.App/
 
 - Base `FluentTheme`, variantes **Light** et **Dark** via `ThemeVariant`, suivi du thème système par défaut.
 - **Tokens centralisés** (`Tokens.axaml`) : palette sémantique (`Surface`, `SurfaceAlt`, `Accent`, `TextPrimary`, `TextMuted`, `Danger`, `Success`), échelle d'espacement (4, 8, 12, 16, 24, 32), rayons, tailles de police ; **aucune couleur codée en dur** dans les vues. Valeurs **provisoires** jusqu'à la fin de la phase Design (D-008).
-- Police stylisée embarquée en ressource (rendu identique sur les 3 OS).
+- Police stylisée embarquée en ressource (rendu identique sur les 3 OS) : **Plus Jakarta Sans** (D-013) ; activer `FontFeatures="+tnum"` sur les textes de progression.
 - Chaque écran définit ses états : vide, chargement, succès, erreur, désactivé.
 
 ### 9.4 Internationalisation
@@ -385,7 +392,7 @@ Objectif : **70 % de couverture** sur `Core` (PRD §7.6). Les tests réseau rée
 | **M2 : Prévisualisation** | `YtDlpMediaSource.GetInfoAsync`, gestion du moteur (binaire présent), carte de prévisualisation | FR-10 à FR-13, FR-50 | Miniature, titre, chaîne, durée |
 | **M3 : Formats** | Sélecteur Vidéo/Audio, résolutions réelles, préférences | FR-20 à FR-22, FR-60/61 | Choix de qualité mémorisé |
 | **M4 : Téléchargement** | `IDownloadService`, progression, fusion, `IFileNamer`, dossier, fin de job | FR-23, FR-30, FR-31, FR-34 à FR-37 | Premier fichier MP4/M4A téléchargé |
-| **M5 : Contrôle et robustesse** | Annulation, reprise, erreurs typées, gestionnaire global, nettoyage des orphelins | FR-32, FR-33, FR-40 à FR-42 | Aucun plantage, messages clairs |
+| **M5 : Contrôle et robustesse** | Annulation, reprise, erreurs typées, gestionnaire global, nettoyage des orphelins | FR-32, FR-33, FR-39, FR-40 à FR-42 | Aucun plantage, messages clairs |
 | **M6 : Moteur à jour** | `IEngineUpdater`, vérification d'intégrité, retour arrière, UI de mise à jour | FR-51 à FR-53 | Moteur mis à jour sans nouvelle release |
 | **M7 : Finitions** | Écran À propos, licences, MP3, historique de session, i18n FR/EN, accessibilité clavier | FR-04, FR-38, FR-62, FR-22 | Application complète fonctionnellement |
 | **M8 : Distribution** | Velopack, signatures, release GitHub, tests manuels 3 OS, critères d'acceptation | PRD §13 | **MVP 1.0** |
@@ -415,11 +422,11 @@ Les six questions de la version 0.1 sont tranchées (JOURNAL : D-004 à D-009).
 | Repli YoutubeExplode dans le MVP | **Reporté en v1.1** (section 7, D-005) |
 | CliWrap ou `Process` brut | **CliWrap accepté** (ADR-08, D-006) |
 | Nom du fichier de sortie | **Titre** seul (section 8.5, D-007) |
-| Police et palette | **Décidées pendant la phase Design** (maquettes, logo) ; tokens provisoires en M0 (D-008) |
+| Police et palette | **Décidées** : Plus Jakarta Sans, accent aqua (D-012, D-013, voir `maquette/`) ; tokens provisoires en M0 jusqu'à M3-08 (D-008) |
 | Hébergement du dépôt | **GitHub privé** pendant la conception, public après avis juridique (D-009) |
 
 Points restants :
 
-1. Choix de la police, de la palette et du logo (phase Design), avant la tâche M3-08.
+1. Maquettes d'écrans et tokens d'espacement / rayons (fin de la phase Design), avant la tâche M3-08. Police, palette et logo : faits (D-011 à D-013).
 2. Résultats des spikes S1 à S5, à consigner ici et dans JOURNAL.md.
 3. Signature de code : budget et calendrier (tâche M8-03).
