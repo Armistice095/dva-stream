@@ -1,0 +1,3 @@
+# Les maquettes (HTML, SVG) ne comptent pas dans les langages du dépôt
+maquette/** linguist-documentation
+docs/** linguist-documentation
