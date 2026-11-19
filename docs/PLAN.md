@@ -35,17 +35,17 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 
 ## M0 — Fondations (prérequis de M1)
 
-> **État au 2026-11-19 :** M0-01 à M0-08 écrits mais **non cochés** : seul `DvaStream.Core` a pu être compilé (0 avertissement) et sa logique vérifiée ; le reste n'a pas été compilé (pas d'accès à NuGet dans l'environnement de rédaction). Cocher après le premier `dotnet build` / `dotnet test` / CI verts. M0-09 reste à faire par le propriétaire du dépôt GitHub.
+> **État au 2026-11-19 :** M0 terminé. Build, tests et lancement vérifiés sur le PC d'Armistice (Windows), thèmes clair et sombre vérifiés, CI #1 verte sur `main` (1 min 43 s), protection de `main` en place. Le logo, défectueux au premier lancement, a été régénéré depuis les SVG. Reste à confirmer plus tard : fonctionnement sur macOS et Linux (la CI les compile et les teste, sans lancement manuel).
 
-- [ ] **M0-01 Solution et projets** — `DvaStream.sln`, `src/DvaStream.Core`, `src/DvaStream.Infrastructure`, `src/DvaStream.App` (Avalonia), `tests/DvaStream.Core.Tests`, `tests/DvaStream.Infrastructure.Tests`, `global.json` (.NET 10). *Fait quand :* `dotnet build` passe. · S
-- [ ] **M0-02 Réglages communs** — `Directory.Build.props` (`Nullable`, `TreatWarningsAsErrors`, analyseurs), `Directory.Packages.props` (versions centralisées), `.editorconfig`. *Fait quand :* build sans avertissement. · S · Dép : M0-01
-- [ ] **M0-03 Hygiène du dépôt** — `.gitignore` .NET, `README.md` (build, structure), modèle de PR et d'issues. *Fait quand :* le dépôt propre après build. · S · Dép : M0-01
-- [ ] **M0-04 Composition root** — `ServiceCollectionExtensions` dans `App/Composition`, conteneur DI, `MainViewModel` résolu par DI. *Fait quand :* l'app démarre avec une vue principale injectée. · M · Dép : M0-01
-- [ ] **M0-05 Journalisation** — Serilog, fichiers tournants dans `DataDirectory/logs`, `JobId` prévu dans le contexte. *Fait quand :* un fichier de log est créé au démarrage. · S · Dép : M0-04
-- [ ] **M0-06 Coquille UI et thèmes** — fenêtre principale vide, `FluentTheme`, `Tokens.axaml` / `Light.axaml` / `Dark.axaml` initialisés à partir de `maquette/palette/Tokens.colors.axaml` et `maquette/ecrans/Tokens.layout.axaml` (D-012, D-016), police Plus Jakarta Sans embarquée (`maquette/police/fonts/`, D-013), suivi du thème système. *Fait quand :* l'app s'affiche en clair et en sombre avec la palette et la police retenues. · M · Dép : M0-04
-- [ ] **M0-07 Test d'architecture** — échoue si `Core` référence `Infrastructure` ou Avalonia, ou si `Infrastructure` référence `App`. *Fait quand :* le test passe et échoue si on casse la règle (vérifié une fois). · S · Dép : M0-01
-- [ ] **M0-08 CI minimale** — `.github/workflows/ci.yml` : restore, build, tests sur `windows-latest`, `ubuntu-latest`, `macos-latest`. *Fait quand :* CI verte sur les 3 OS. · M · Dép : M0-07
-- [ ] **M0-09 Hébergement** — créer le dépôt GitHub **privé**, pousser `main`, protéger la branche (CI obligatoire). *Fait quand :* première CI exécutée sur GitHub. · S · Dép : M0-08
+- [x] **M0-01 Solution et projets** — `DvaStream.sln`, `src/DvaStream.Core`, `src/DvaStream.Infrastructure`, `src/DvaStream.App` (Avalonia), `tests/DvaStream.Core.Tests`, `tests/DvaStream.Infrastructure.Tests`, `global.json` (.NET 10). *Fait quand :* `dotnet build` passe. · S
+- [x] **M0-02 Réglages communs** — `Directory.Build.props` (`Nullable`, `TreatWarningsAsErrors`, analyseurs), `Directory.Packages.props` (versions centralisées), `.editorconfig`. *Fait quand :* build sans avertissement. · S · Dép : M0-01
+- [x] **M0-03 Hygiène du dépôt** — `.gitignore` .NET, `README.md` (build, structure), modèle de PR et d'issues. *Fait quand :* le dépôt propre après build. · S · Dép : M0-01
+- [x] **M0-04 Composition root** — `ServiceCollectionExtensions` dans `App/Composition`, conteneur DI, `MainViewModel` résolu par DI. *Fait quand :* l'app démarre avec une vue principale injectée. · M · Dép : M0-01
+- [x] **M0-05 Journalisation** — Serilog, fichiers tournants dans `DataDirectory/logs`, `JobId` prévu dans le contexte. *Fait quand :* un fichier de log est créé au démarrage. · S · Dép : M0-04
+- [x] **M0-06 Coquille UI et thèmes** — fenêtre principale vide, `FluentTheme`, `Tokens.axaml` / `Light.axaml` / `Dark.axaml` initialisés à partir de `maquette/palette/Tokens.colors.axaml` et `maquette/ecrans/Tokens.layout.axaml` (D-012, D-016), police Plus Jakarta Sans embarquée (`maquette/police/fonts/`, D-013), suivi du thème système. *Fait quand :* l'app s'affiche en clair et en sombre avec la palette et la police retenues. · M · Dép : M0-04
+- [x] **M0-07 Test d'architecture** — échoue si `Core` référence `Infrastructure` ou Avalonia, ou si `Infrastructure` référence `App`. *Fait quand :* le test passe et échoue si on casse la règle (vérifié une fois). · S · Dép : M0-01
+- [x] **M0-08 CI minimale** — `.github/workflows/ci.yml` : restore, build, tests sur `windows-latest`, `ubuntu-latest`, `macos-latest`. *Fait quand :* CI verte sur les 3 OS. · M · Dép : M0-07
+- [x] **M0-09 Hébergement** — créer le dépôt GitHub **privé**, pousser `main`, protéger la branche (CI obligatoire). *Fait quand :* première CI exécutée sur GitHub. · S · Dép : M0-08
 
 **Fin de M0 :** l'app démarre sur les 3 OS, CI verte, journal et DI en place.
 

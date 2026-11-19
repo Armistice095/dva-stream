@@ -23,13 +23,13 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-11-19 · **Phase actuelle :** M0 en cours (code écrit, à valider par la CI) ; maquettes d'écrans en premier jet à valider
+**Dernière mise à jour :** 2026-11-19 · **Phase actuelle :** M0 terminé ; M1 à démarrer ; maquettes d'écrans en premier jet à valider
 
 | Jalon | Contenu | Statut |
 |---|---|---|
 | Cadrage | PROJECT (v0.2), PRD (v0.2), TDD (v0.3), PLAN, JOURNAL | **Terminé** |
 | Design | Maquettes, logo, police, palette, tokens | **En cours** : logo, palette, police faits (`maquette/`) ; écran principal et écrans secondaires (premier lancement, Paramètres, Historique, À propos, Licences) en premier jet à valider |
-| M0 — Fondations | Solution, DI, logs, CI, thème vide | **En cours** : M0-01 à M0-08 écrits (non compilés sauf `Core`), M0-09 (dépôt GitHub) à faire |
+| M0 — Fondations | Solution, DI, logs, CI, thème vide | **Terminé** (2026-11-19) : build, tests, lancement, thèmes clair et sombre et CI #1 verts ; protection de `main` en place |
 | M1 — Analyse d'URL | Parseur, saisie, presse-papiers | À faire |
 | M2 — Prévisualisation | Métadonnées yt-dlp, carte de prévisualisation | À faire |
 | M3 — Formats | Sélecteur, paramètres persistants, thème | À faire |
@@ -39,7 +39,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 | M7 — Finitions | MP3, historique, À propos, EN, accessibilité | À faire |
 | M8 — Distribution | Velopack, signature, release 1.0 | À faire |
 
-**Prochaine action :** pousser le dépôt sur GitHub (M0-09), lancer `dotnet build` / `dotnet test` ou la CI, corriger ce qui casse, puis cocher M0 ; en parallèle valider les écrans et dessiner l'état « en pause ».
+**Prochaine action :** démarrer M1 (M1-01 types du domaine et `IUrlParser`, puis parseur d'URL et saisie) ; en parallèle valider les écrans et dessiner l'état « en pause ».
 
 ---
 
@@ -74,7 +74,6 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 | Point | Depuis | Responsable | Statut |
 |---|---|---|---|
-| Identité Git du dépôt (nom et email de l'auteur des commits) | 2026-11-18 | À définir | Ouvert |
 | Les copies en ligne (documents PRD et TDD) ne contiennent ni FR-39 ni les mises à jour de design : la copie du dépôt fait foi, à resynchroniser si le document en ligne reste utilisé | 2026-11-19 | Armistice | Ouvert |
 | Page « Licences » retirée de la maquette alors que PRD §10, FR-62 et TDD §10 l'exigent. À trancher : où fournir les mentions de licence (fichier à côté de l'application, lien dans À propos…) et mettre PRD / PLAN M7-04 à jour | 2026-11-19 | Armistice | Ouvert |
 
@@ -83,6 +82,10 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 ## Journal chronologique
 
 ### 2026-11-19
+- **[Armistice + Claude] · M0-06, M0-09** — Thème sombre vérifié (Windows en mode sombre : fond et texte s'inversent, palette D-012) ; protection de la branche `main` configurée sur GitHub (CI obligatoire). **M0 terminé** : M0-01 à M0-09 cochés dans `PLAN.md`, point « Protection de `main` » retiré des blocages.
+- **[Armistice + Claude] · M0** — Premier lancement sur le PC d'Armistice (Windows, SDK .NET 10) : build, tests et exécution OK ; la fenêtre affiche titre, statut, police et couleurs de la maquette. Dépôt GitHub créé, `main` poussé, **CI #1 verte** (1 min 43 s). M0-01 à M0-05 et M0-07 à M0-09 cochés dans `PLAN.md` ; M0-06 reste ouvert (thème sombre non vérifié).
+- **[Armistice + Claude] · M0-06** — Défaut trouvé au premier lancement : le logo n'apparaissait pas (point minuscule, icône de fenêtre absente). Cause : les PNG et l'ICO exportés pendant la phase design étaient quasi transparents (0,4 % de pixels opaques à 1024 px) ; les SVG étaient corrects. Images régénérées depuis les SVG (`correctif-logo.zip` : `Assets/dva-stream-mark.png`, `Assets/app-icon.ico`, `maquette/logo/png/*`, `maquette/logo/app-icon.ico`).
+- **[Armistice + Claude] · Dépôt** — Identité Git à utiliser pour les prochains commits : Armistice ANAGONOU (`git config user.name` / `user.email`). Les 7 commits existants gardent l'identité provisoire « DVA Labs » (historique non réécrit). Point « Identité Git » retiré des blocages. Statistiques GitHub faussées par les maquettes HTML (91,5 % de HTML) : `.gitattributes` avec `linguist-documentation` pour `maquette/` et `docs/` proposé.
 - **[Claude] · M0** — Code du jalon M0 écrit : `DvaStream.slnx`, `global.json`, `Directory.Build.props` / `Directory.Packages.props`, `.editorconfig`, `.gitignore`, README, modèles de PR et d'issues (M0-01 à M0-03) ; `Core` (`AppDirectoryResolver`, `IPlatformServices`) ; `Infrastructure` (Serilog, fichiers tournants 14 jours) ; `App` (composition root DI, `MainViewModel`, fenêtre principale, tokens de couleurs et de mise en page issus de `maquette/`, police Plus Jakarta Sans, icône) (M0-04 à M0-06) ; tests (résolution des dossiers, journalisation, architecture) (M0-07) ; `ci.yml` sur 3 OS (M0-08). Vérifié ici : `Core` compile sans avertissement et le comportement de `AppDirectoryResolver` est conforme (banc d'essai équivalent aux tests). **Non vérifié** : le reste n'a pas été compilé (pas d'accès à NuGet) ; versions NuGet d'Avalonia et de CommunityToolkit.Mvvm confirmées sur nuget.org, les autres épinglées prudemment. La première exécution de la CI fait foi ; les cases de M0 ne sont pas cochées. Décisions D-018 à D-020. TDD passé en v0.4.
 - **[Claude] · Cadrage** — Cohérence des documents après la phase Design : PRD passé en v0.2 (FR-39 Pause) ; TDD passé en v0.3 (§3 liste `maquette/`, §9.3 tokens figés au lieu de « provisoires », §19 mis à jour) ; PLAN : M0-06 reprend les tokens et la police de `maquette/`, M3-08 reformulée (habillage final conforme aux maquettes validées) ; `PROJECT.md` aligné sur ces versions. Les constats de l'entrée précédente sont levés.
 - **[Claude] · Dépôt** — Reprise du travail fait hors de cette conversation (archive `dva-stream-v0_9-design`) : `maquette/` (logo, palette, police, écrans, tokens de mise en page), documents mis à jour (D-011 à D-017, FR-39 Pause) ; le tout committé dans le dépôt, `PROJECT.md` aligné sur l'état réel (écrans en premier jet, tokens figés). Constats laissés ouverts : `PLAN.md` M0-06 et `TDD.md` §9.3 parlent encore de tokens « provisoires » alors que palette et tokens de mise en page sont figés ; `TDD.md` §3 ne liste pas `maquette/`.
