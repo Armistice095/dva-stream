@@ -13,7 +13,7 @@ Plan d'implémentation du MVP 1.0, découpé en jalons puis en sous-tâches. Ré
 ## Décisions qui cadrent ce plan
 
 - FFmpeg **embarqué** ; repli YoutubeExplode **reporté en v1.1** ; CliWrap **accepté** ; nom de fichier de sortie = **Titre** ; dépôt GitHub **privé** pendant la conception.
-- Logo, palette et police sont **décidés** (D-011 à D-013, dossier `maquette/`) ; restent les maquettes d'écrans. La **phase Design** (maquettes, logo, police, palette) a lieu après les documents et avant l'habillage final. Jusqu'à son terme, les tokens de thème sont **provisoires** (M0-06) ; l'habillage définitif est la tâche M3-08.
+- Logo, palette, police et tokens de mise en page sont **décidés et figés** (D-011 à D-013, D-016, dossier `maquette/`) ; reste la validation des maquettes d'écrans. Les tokens sont repris tels quels en M0-06 ; l'habillage final conforme aux écrans validés est la tâche M3-08.
 
 ## Vue d'ensemble
 
@@ -40,7 +40,7 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 - [ ] **M0-03 Hygiène du dépôt** — `.gitignore` .NET, `README.md` (build, structure), modèle de PR et d'issues. *Fait quand :* le dépôt propre après build. · S · Dép : M0-01
 - [ ] **M0-04 Composition root** — `ServiceCollectionExtensions` dans `App/Composition`, conteneur DI, `MainViewModel` résolu par DI. *Fait quand :* l'app démarre avec une vue principale injectée. · M · Dép : M0-01
 - [ ] **M0-05 Journalisation** — Serilog, fichiers tournants dans `DataDirectory/logs`, `JobId` prévu dans le contexte. *Fait quand :* un fichier de log est créé au démarrage. · S · Dép : M0-04
-- [ ] **M0-06 Coquille UI et thèmes provisoires** — fenêtre principale vide, `FluentTheme`, `Tokens.axaml` / `Light.axaml` / `Dark.axaml` avec valeurs **provisoires**, suivi du thème système. *Fait quand :* l'app s'affiche en clair et en sombre. · M · Dép : M0-04
+- [ ] **M0-06 Coquille UI et thèmes** — fenêtre principale vide, `FluentTheme`, `Tokens.axaml` / `Light.axaml` / `Dark.axaml` initialisés à partir de `maquette/palette/Tokens.colors.axaml` et `maquette/ecrans/Tokens.layout.axaml` (D-012, D-016), police Plus Jakarta Sans embarquée (`maquette/police/fonts/`, D-013), suivi du thème système. *Fait quand :* l'app s'affiche en clair et en sombre avec la palette et la police retenues. · M · Dép : M0-04
 - [ ] **M0-07 Test d'architecture** — échoue si `Core` référence `Infrastructure` ou Avalonia, ou si `Infrastructure` référence `App`. *Fait quand :* le test passe et échoue si on casse la règle (vérifié une fois). · S · Dép : M0-01
 - [ ] **M0-08 CI minimale** — `.github/workflows/ci.yml` : restore, build, tests sur `windows-latest`, `ubuntu-latest`, `macos-latest`. *Fait quand :* CI verte sur les 3 OS. · M · Dép : M0-07
 - [ ] **M0-09 Hébergement** — créer le dépôt GitHub **privé**, pousser `main`, protéger la branche (CI obligatoire). *Fait quand :* première CI exécutée sur GitHub. · S · Dép : M0-08
@@ -96,7 +96,7 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 - [ ] **M3-05 `FormatSelectorView`** — sélecteur segmenté Vidéo/Audio, liste de qualités, mention sur le ré-encodage MP3, états désactivés. *Fait quand :* affichage correct en clair et en sombre. · M · Dép : M3-03
 - [ ] **M3-06 Câblage des préférences** — mémorisation de la qualité et du format ; interrupteur de détection du presse-papiers relié aux paramètres (remplace la constante de M1-09). *Fait quand :* les choix persistent après redémarrage. · S · Dép : M3-01, M3-05
 - [ ] **M3-07 Écran Paramètres minimal** — dossier par défaut (sélecteur natif), thème (système/clair/sombre), qualité, format audio, détection du presse-papiers. *Fait quand :* chaque réglage modifie le comportement. · M · Dép : M3-06
-- [ ] **M3-08 Thème appliqué et habillage** — thème choisi appliqué à chaud ; **intégration des tokens définitifs issus de la phase Design** (police, palette, logo). *Fait quand :* les deux thèmes sont complets et conformes aux maquettes. · L · Dép : M3-07, **fin de la phase Design**
+- [ ] **M3-08 Thème appliqué et habillage** — thème choisi appliqué à chaud ; **habillage final conforme aux maquettes d'écrans validées**, logo et icônes d'application intégrés (`maquette/logo/`). *Fait quand :* les deux thèmes sont complets et conformes aux maquettes. · L · Dép : M3-07, **validation des maquettes d'écrans**
 - [ ] **M3-09 `DownloadRequest`** — construction et validation à partir du `MediaInfo` et des choix (cohérence vidéo/audio, dossier). *Fait quand :* tests des cas invalides. · S · Dép : M3-03
 - [ ] **M3-10 Clôture** — vérification FR-20 à FR-22, FR-60, FR-61 ; `PLAN.md` et `JOURNAL.md` à jour. · S · Dép : toutes
 

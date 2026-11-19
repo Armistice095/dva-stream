@@ -1,6 +1,6 @@
 # PRD — DVA Stream
 
-**DVA Labs** · Product Requirements Document · Version 0.1 (brouillon) · Cible : MVP 1.0
+**DVA Labs** · Product Requirements Document · Version 0.2 (brouillon) · Cible : MVP 1.0
 
 ## 1. Résumé exécutif
 

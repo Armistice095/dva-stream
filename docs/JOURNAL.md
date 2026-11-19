@@ -27,7 +27,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 
 | Jalon | Contenu | Statut |
 |---|---|---|
-| Cadrage | PROJECT (v0.2), PRD (v0.1), TDD (v0.2), PLAN, JOURNAL | **Terminé** |
+| Cadrage | PROJECT (v0.2), PRD (v0.2), TDD (v0.3), PLAN, JOURNAL | **Terminé** |
 | Design | Maquettes, logo, police, palette, tokens | **En cours** : logo, palette, police faits (`maquette/`) ; écran principal et écrans secondaires (premier lancement, Paramètres, Historique, À propos, Licences) en premier jet à valider |
 | M0 — Fondations | Solution, DI, logs, CI, thème vide | À faire |
 | M1 — Analyse d'URL | Parseur, saisie, presse-papiers | À faire |
@@ -72,6 +72,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 | Point | Depuis | Responsable | Statut |
 |---|---|---|---|
 | Identité Git du dépôt (nom et email de l'auteur des commits) | 2026-11-18 | À définir | Ouvert |
+| Les copies en ligne (documents PRD et TDD) ne contiennent ni FR-39 ni les mises à jour de design : la copie du dépôt fait foi, à resynchroniser si le document en ligne reste utilisé | 2026-11-19 | Armistice | Ouvert |
 | Page « Licences » retirée de la maquette alors que PRD §10, FR-62 et TDD §10 l'exigent. À trancher : où fournir les mentions de licence (fichier à côté de l'application, lien dans À propos…) et mettre PRD / PLAN M7-04 à jour | 2026-11-19 | Armistice | Ouvert |
 
 ---
@@ -79,6 +80,7 @@ Journal de bord vivant du projet. Il répond à deux questions : **où en est-on
 ## Journal chronologique
 
 ### 2026-11-19
+- **[Claude] · Cadrage** — Cohérence des documents après la phase Design : PRD passé en v0.2 (FR-39 Pause) ; TDD passé en v0.3 (§3 liste `maquette/`, §9.3 tokens figés au lieu de « provisoires », §19 mis à jour) ; PLAN : M0-06 reprend les tokens et la police de `maquette/`, M3-08 reformulée (habillage final conforme aux maquettes validées) ; `PROJECT.md` aligné sur ces versions. Les constats de l'entrée précédente sont levés.
 - **[Claude] · Dépôt** — Reprise du travail fait hors de cette conversation (archive `dva-stream-v0_9-design`) : `maquette/` (logo, palette, police, écrans, tokens de mise en page), documents mis à jour (D-011 à D-017, FR-39 Pause) ; le tout committé dans le dépôt, `PROJECT.md` aligné sur l'état réel (écrans en premier jet, tokens figés). Constats laissés ouverts : `PLAN.md` M0-06 et `TDD.md` §9.3 parlent encore de tokens « provisoires » alors que palette et tokens de mise en page sont figés ; `TDD.md` §3 ne liste pas `maquette/`.
 - **[Armistice + Claude] · Cadrage** — « Pause » ajoutée au PRD (FR-39, D-017) : exigence P1, critère d'acceptation, section TDD §8.3 bis (arrêt de l'arbre de processus, dossier temporaire conservé, reprise par `--continue`), tâche M5-03 étendue. Point ouvert « Pause » levé. À faire côté maquette : état « en pause » du téléchargement (menu avec « Reprendre »).
 - **[Armistice + Claude] · Design** — Tokens d'espacement et de rayons figés (D-016) : audit des maquettes (valeurs éparses 2, 3, 5, 6, 7, 9, 10, 14, 18, 22, 28…), échelle retenue, valeurs mappées dans les 4 fichiers HTML de l'écran principal et des écrans secondaires, PNG régénérés. `tokens-layout.json` mis à jour (usages, règle du rayon interne, exceptions) ; `Tokens.layout.axaml` créé (brouillon non compilé pour M0-06 / M3-08). Changement visible : légers décalages de 2 à 4 px, à valider à l'œil.

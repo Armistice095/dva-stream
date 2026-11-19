@@ -1,11 +1,11 @@
 # PROJECT.md — DVA Stream (by DVA Labs)
 
-> Fiche d'identité du projet. Version 0.2 — mise à jour pour refléter les décisions du PRD v0.1 et du TDD v0.2. Détails dans les documents listés en section 6 ; l'avancement est dans `JOURNAL.md`.
+> Fiche d'identité du projet. Version 0.2 — mise à jour pour refléter les décisions du PRD v0.2 et du TDD v0.3. Détails dans les documents listés en section 6 ; l'avancement est dans `JOURNAL.md`.
 
 ## 1. Identité
 * **Entreprise :** DVA Labs
 * **Produit :** DVA Stream
-* **Statut :** cadrage terminé (documents v0.1/v0.2) ; phase Design en cours (logo, palette, police et tokens de mise en page figés dans `maquette/` ; écrans en premier jet à valider), puis jalon M0
+* **Statut :** cadrage terminé (PRD v0.2, TDD v0.3) ; phase Design en cours (logo, palette, police et tokens de mise en page figés dans `maquette/` ; écrans en premier jet à valider), puis jalon M0
 
 ## 2. Présentation du Projet
 **DVA Stream** est une application de bureau multiplateforme (Windows, macOS, Linux) permettant de télécharger des vidéos et d'extraire des pistes audio depuis YouTube à partir d'une simple URL, de façon locale, sûre et sans publicité.

@@ -1,6 +1,6 @@
 # TDD — DVA Stream
 
-**DVA Labs** · Technical Design Document · Version 0.2 (brouillon) · Référence : PRD v0.1
+**DVA Labs** · Technical Design Document · Version 0.3 (brouillon) · Référence : PRD v0.2
 
 ## 1. Objet et périmètre
 
@@ -8,7 +8,7 @@ Ce document décrit **comment** construire le MVP 1.0 défini dans le PRD : déc
 
 Les points marqués **[À valider]** sont des hypothèses à confirmer, idéalement par un spike technique (section 16) avant de coder le composant concerné.
 
-**Version 0.2** : les décisions D-004 à D-009 du JOURNAL (FFmpeg embarqué, repli YoutubeExplode reporté en v1.1, CliWrap accepté, nom de fichier = Titre, dépôt GitHub privé) sont intégrées ; la section 19 les récapitule.
+**Version 0.3** : ajout de la pause (FR-39, §8.3 bis), de la police Plus Jakarta Sans et des tokens figés (D-012, D-013, D-016) ; sources de design dans `maquette/`. **Version 0.2** : les décisions D-004 à D-009 du JOURNAL (FFmpeg embarqué, repli YoutubeExplode reporté en v1.1, CliWrap accepté, nom de fichier = Titre, dépôt GitHub privé) sont intégrées ; la section 19 les récapitule.
 
 ## 2. Décisions techniques (ADR synthétiques)
 
@@ -38,6 +38,7 @@ Les points marqués **[À valider]** sont des hypothèses à confirmer, idéalem
 ```
 dva-stream/
 ├── docs/                      PROJECT.md, PRD.md, TDD.md, PLAN.md, JOURNAL.md
+├── maquette/                  design : logo, palette, police, écrans, tokens (sources de Tokens.axaml)
 ├── src/
 │   ├── DvaStream.Core/        modèles, interfaces, logique métier
 │   ├── DvaStream.Infrastructure/   yt-dlp, YoutubeExplode, FFmpeg, fichiers, paramètres
@@ -283,7 +284,7 @@ DvaStream.App/
 ### 9.3 Thèmes et design tokens (PRD §8)
 
 - Base `FluentTheme`, variantes **Light** et **Dark** via `ThemeVariant`, suivi du thème système par défaut.
-- **Tokens centralisés** (`Tokens.axaml`) : palette sémantique (`Surface`, `SurfaceAlt`, `Accent`, `TextPrimary`, `TextMuted`, `Danger`, `Success`), échelle d'espacement (4, 8, 12, 16, 24, 32), rayons, tailles de police ; **aucune couleur codée en dur** dans les vues. Valeurs **provisoires** jusqu'à la fin de la phase Design (D-008).
+- **Tokens centralisés** (`Tokens.axaml`) : palette sémantique (`Bg`, `Surface`, `SurfaceAlt`, `Border`, `TextPrimary`, `TextMuted`, `Primary`, `Accent`, `AccentText`, `Danger`, `Success`, `Warning`…), échelle d'espacement (4, 8, 12, 16, 20, 24, 32, 40, 48, 64), rayons (4, 8, 12, 16, pill), tailles de police (32, 20, 16, 14, 12) ; **aucune couleur codée en dur** dans les vues. Valeurs **figées** : palette D-012, police D-013, mise en page D-016 ; sources dans `maquette/palette/` (`tokens.json`, `Tokens.colors.axaml`) et `maquette/ecrans/` (`tokens-layout.json`, `Tokens.layout.axaml`). Le texte sur fond clair utilise `AccentText`, jamais `Accent`.
 - Police stylisée embarquée en ressource (rendu identique sur les 3 OS) : **Plus Jakarta Sans** (D-013) ; activer `FontFeatures="+tnum"` sur les textes de progression.
 - Chaque écran définit ses états : vide, chargement, succès, erreur, désactivé.
 
@@ -422,11 +423,11 @@ Les six questions de la version 0.1 sont tranchées (JOURNAL : D-004 à D-009).
 | Repli YoutubeExplode dans le MVP | **Reporté en v1.1** (section 7, D-005) |
 | CliWrap ou `Process` brut | **CliWrap accepté** (ADR-08, D-006) |
 | Nom du fichier de sortie | **Titre** seul (section 8.5, D-007) |
-| Police et palette | **Décidées** : Plus Jakarta Sans, accent aqua (D-012, D-013, voir `maquette/`) ; tokens provisoires en M0 jusqu'à M3-08 (D-008) |
+| Police et palette | **Décidées** : Plus Jakarta Sans, accent aqua (D-012, D-013, voir `maquette/`) ; tokens de couleur et de mise en page figés (D-012, D-016), repris tels quels en M0-06 |
 | Hébergement du dépôt | **GitHub privé** pendant la conception, public après avis juridique (D-009) |
 
 Points restants :
 
-1. Maquettes d'écrans et tokens d'espacement / rayons (fin de la phase Design), avant la tâche M3-08. Police, palette et logo : faits (D-011 à D-013).
+1. Validation des maquettes d'écrans (premier jet) et de l'état « en pause », avant la tâche M3-08. Logo, palette, police et tokens de mise en page : faits (D-011 à D-013, D-016).
 2. Résultats des spikes S1 à S5, à consigner ici et dans JOURNAL.md.
 3. Signature de code : budget et calendrier (tâche M8-03).
