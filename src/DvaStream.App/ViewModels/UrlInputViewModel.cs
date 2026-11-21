@@ -104,8 +104,8 @@ public sealed class UrlInputViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Interrupteur de la détection du presse-papiers (FR-02). Provisoirement actif par défaut ;
-    /// relié aux paramètres en M3-06.
+    /// Interrupteur de la détection du presse-papiers (FR-02). Actif par défaut ; piloté par les paramètres
+    /// (<c>MainViewModel</c>, M3-06).
     /// </summary>
     public bool IsClipboardDetectionEnabled
     {

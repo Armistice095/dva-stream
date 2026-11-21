@@ -14,6 +14,7 @@
 
   <Application.Styles>
     <FluentTheme />
+    <StyleInclude Source="avares://DvaStream.App/Styles/Controls.axaml" />
 
     <!-- Police de l'application : Plus Jakarta Sans (D-013), embarquée dans Assets/Fonts -->
     <Style Selector="Window">

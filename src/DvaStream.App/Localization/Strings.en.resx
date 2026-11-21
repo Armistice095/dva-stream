@@ -132,4 +132,76 @@
   <data name="Err_Unknown_Action" xml:space="preserve">
     <value>Try again. Details are in the log file.</value>
   </data>
+  <data name="Format_Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="Format_Audio" xml:space="preserve">
+    <value>Audio only</value>
+  </data>
+  <data name="Format_Quality" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="Format_AudioFormat" xml:space="preserve">
+    <value>Audio format</value>
+  </data>
+  <data name="Format_M4a" xml:space="preserve">
+    <value>M4A</value>
+  </data>
+  <data name="Format_Mp3Soon" xml:space="preserve">
+    <value>MP3 · coming soon</value>
+  </data>
+  <data name="Format_Mp3Note" xml:space="preserve">
+    <value>MP3 requires re-encoding, which takes longer than M4A.</value>
+  </data>
+  <data name="Format_Fallback" xml:space="preserve">
+    <value>{0}p is not available for this video: {1}p selected.</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Open" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="Settings_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Settings_Section_Downloads" xml:space="preserve">
+    <value>DOWNLOADS</value>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>APPEARANCE AND COMFORT</value>
+  </data>
+  <data name="Settings_Folder" xml:space="preserve">
+    <value>Default folder</value>
+  </data>
+  <data name="Settings_FolderChange" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Settings_FolderPickerTitle" xml:space="preserve">
+    <value>Choose the download folder</value>
+  </data>
+  <data name="Settings_Quality" xml:space="preserve">
+    <value>Preferred video quality</value>
+  </data>
+  <data name="Settings_Audio" xml:space="preserve">
+    <value>Preferred audio format</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings_ThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_ThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_ThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Settings_Clipboard" xml:space="preserve">
+    <value>Clipboard detection</value>
+  </data>
+  <data name="Settings_ClipboardHelp" xml:space="preserve">
+    <value>Suggests a copied YouTube link when you come back to the app.</value>
+  </data>
 </root>

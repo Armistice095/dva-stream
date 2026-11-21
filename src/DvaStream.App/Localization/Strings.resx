@@ -132,4 +132,76 @@
   <data name="Err_Unknown_Action" xml:space="preserve">
     <value>Réessayez. Les détails sont dans le fichier journal.</value>
   </data>
+  <data name="Format_Video" xml:space="preserve">
+    <value>Vidéo</value>
+  </data>
+  <data name="Format_Audio" xml:space="preserve">
+    <value>Audio seul</value>
+  </data>
+  <data name="Format_Quality" xml:space="preserve">
+    <value>Qualité</value>
+  </data>
+  <data name="Format_AudioFormat" xml:space="preserve">
+    <value>Format audio</value>
+  </data>
+  <data name="Format_M4a" xml:space="preserve">
+    <value>M4A</value>
+  </data>
+  <data name="Format_Mp3Soon" xml:space="preserve">
+    <value>MP3 · bientôt</value>
+  </data>
+  <data name="Format_Mp3Note" xml:space="preserve">
+    <value>Le MP3 demande un ré-encodage, plus long que le M4A.</value>
+  </data>
+  <data name="Format_Fallback" xml:space="preserve">
+    <value>{0}p n’est pas disponible pour cette vidéo : {1}p sélectionnée.</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Settings_Open" xml:space="preserve">
+    <value>Ouvrir les paramètres</value>
+  </data>
+  <data name="Settings_Back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="Settings_Section_Downloads" xml:space="preserve">
+    <value>TÉLÉCHARGEMENTS</value>
+  </data>
+  <data name="Settings_Section_Appearance" xml:space="preserve">
+    <value>APPARENCE ET CONFORT</value>
+  </data>
+  <data name="Settings_Folder" xml:space="preserve">
+    <value>Dossier par défaut</value>
+  </data>
+  <data name="Settings_FolderChange" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="Settings_FolderPickerTitle" xml:space="preserve">
+    <value>Choisir le dossier de téléchargement</value>
+  </data>
+  <data name="Settings_Quality" xml:space="preserve">
+    <value>Qualité vidéo préférée</value>
+  </data>
+  <data name="Settings_Audio" xml:space="preserve">
+    <value>Format audio préféré</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="Settings_ThemeLight" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="Settings_ThemeDark" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="Settings_ThemeSystem" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="Settings_Clipboard" xml:space="preserve">
+    <value>Détection du presse-papiers</value>
+  </data>
+  <data name="Settings_ClipboardHelp" xml:space="preserve">
+    <value>Propose un lien YouTube copié au retour dans l’application.</value>
+  </data>
 </root>

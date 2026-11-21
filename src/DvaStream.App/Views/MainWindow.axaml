@@ -20,19 +20,38 @@
             Background="{DynamicResource SurfaceBrush}"
             BorderBrush="{DynamicResource BorderBrush}"
             BorderThickness="0,0,0,1">
-      <StackPanel Orientation="Horizontal"
-                  Spacing="{StaticResource Space3}"
-                  Margin="20,0"
-                  VerticalAlignment="Center">
-        <Image Source="/Assets/dva-stream-mark.png" Width="28" Height="28" />
-        <TextBlock Text="{Binding Title}"
-                   FontSize="16" FontWeight="Bold"
-                   VerticalAlignment="Center"
-                   Foreground="{DynamicResource TextPrimaryBrush}" />
-      </StackPanel>
+      <Grid ColumnDefinitions="*,Auto" Margin="20,0">
+        <StackPanel Grid.Column="0"
+                    Orientation="Horizontal"
+                    Spacing="{StaticResource Space3}"
+                    VerticalAlignment="Center">
+          <Image Source="/Assets/dva-stream-mark.png" Width="28" Height="28" />
+          <TextBlock Text="{Binding Title}"
+                     FontSize="16" FontWeight="Bold"
+                     VerticalAlignment="Center"
+                     Foreground="{DynamicResource TextPrimaryBrush}" />
+        </StackPanel>
+        <!-- Paramètres : ouvre l'écran, ou revient à l'accueil s'il est déjà ouvert -->
+        <Button Grid.Column="1" Classes="icon"
+                Classes.selected="{Binding IsSettingsPage}"
+                Command="{Binding ToggleSettingsCommand}"
+                ToolTip.Tip="{loc:Loc Settings_Open}"
+                AutomationProperties.Name="{loc:Loc Settings_Open}">
+          <Path Data="M4,7 L13,7 M18,7 L20,7 M4,12 L7,12 M12,12 L20,12 M4,17 L11,17 M16,17 L20,17 M15.5,7 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0 M9.5,12 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0 M13.5,17 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0"
+                Stroke="{DynamicResource TextMutedBrush}"
+                StrokeThickness="1.8"
+                StrokeLineCap="Round"
+                StrokeJoin="Round"
+                Width="24" Height="24"
+                Stretch="Uniform" />
+        </Button>
+      </Grid>
     </Border>
 
     <!-- Colonne de contenu (maquette : 640 px) -->
+    <Panel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                  IsVisible="{Binding IsHomePage}">
     <StackPanel MaxWidth="{StaticResource ContentColumnWidth}"
                 Margin="24"
                 VerticalAlignment="Top"
@@ -49,7 +68,30 @@
                  Foreground="{DynamicResource TextMutedBrush}" />
       <views:UrlInputView DataContext="{Binding UrlInput}" />
       <views:PreviewView DataContext="{Binding Preview}" />
+      <views:FormatSelectorView DataContext="{Binding FormatSelector}" />
     </StackPanel>
+    </ScrollViewer>
+    <!-- Paramètres (maquette B) : retour, puis réglages enregistrés dès qu'ils changent -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                  IsVisible="{Binding IsSettingsPage}">
+      <Grid MaxWidth="{StaticResource ContentColumnWidth}" Margin="24">
+        <Button Classes="icon"
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                Margin="-4,36,0,0"
+                Command="{Binding CloseSettingsCommand}"
+                AutomationProperties.Name="{loc:Loc Settings_Back}">
+          <Path Data="M15,5 L8,12 L15,19"
+                Stroke="{DynamicResource TextPrimaryBrush}"
+                StrokeThickness="2"
+                StrokeLineCap="Round"
+                StrokeJoin="Round"
+                Width="20" Height="20"
+                Stretch="Uniform" />
+        </Button>
+        <views:SettingsView DataContext="{Binding Settings}" Margin="44,0,0,0" />
+      </Grid>
+    </ScrollViewer>
+    </Panel>
 
   </DockPanel>
 </Window>

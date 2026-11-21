@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DvaStream.App.ViewModels"
+             xmlns:loc="using:DvaStream.App.Localization"
+             xmlns:set="using:DvaStream.Core.Settings"
+             x:Class="DvaStream.App.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+  <StackPanel Spacing="{StaticResource Space4}">
+
+    <!-- Titre avec retour (maquette B) -->
+    <TextBlock Text="{loc:Loc Settings_Title}"
+               Margin="0,32,0,0"
+               FontSize="28" FontWeight="Bold"
+               Foreground="{DynamicResource TextPrimaryBrush}" />
+
+    <!-- Téléchargements -->
+    <TextBlock Text="{loc:Loc Settings_Section_Downloads}"
+               Margin="4,8,0,0"
+               FontSize="12" FontWeight="SemiBold"
+               Foreground="{DynamicResource TextMutedBrush}" />
+    <Border Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusLg}">
+      <StackPanel>
+
+        <Grid ColumnDefinitions="Auto,*,Auto" Margin="16,12">
+          <TextBlock Grid.Column="0" Text="{loc:Loc Settings_Folder}"
+                     VerticalAlignment="Center" FontWeight="SemiBold"
+                     Foreground="{DynamicResource TextPrimaryBrush}" />
+          <TextBlock Grid.Column="1" Text="{Binding DefaultFolder}"
+                     Margin="16,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                     TextTrimming="CharacterEllipsis"
+                     Foreground="{DynamicResource TextMutedBrush}"
+                     ToolTip.Tip="{Binding DefaultFolder}" />
+          <Button Grid.Column="2" Classes="link"
+                  Content="{loc:Loc Settings_FolderChange}"
+                  Command="{Binding BrowseFolderCommand}" />
+        </Grid>
+
+        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}">
+          <Grid ColumnDefinitions="*,Auto" Margin="16,12">
+            <TextBlock Grid.Column="0" Text="{loc:Loc Settings_Quality}"
+                       VerticalAlignment="Center" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+            <ComboBox Grid.Column="1" MinWidth="140"
+                      Height="{StaticResource SelectHeight}"
+                      ItemsSource="{Binding QualityOptions}"
+                      SelectedItem="{Binding SelectedQuality}"
+                      AutomationProperties.Name="{loc:Loc Settings_Quality}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:ResolutionOption">
+                  <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+        </Border>
+
+        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}">
+          <Grid ColumnDefinitions="*,Auto" Margin="16,12">
+            <TextBlock Grid.Column="0" Text="{loc:Loc Settings_Audio}"
+                       VerticalAlignment="Center" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+            <Border Grid.Column="1"
+                    Background="{DynamicResource SurfaceAltBrush}"
+                    CornerRadius="{StaticResource RadiusMd}"
+                    Padding="4">
+              <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Classes="segment selected" Content="{loc:Loc Format_M4a}" />
+                <Button Classes="segment"
+                        Content="{loc:Loc Format_Mp3Soon}"
+                        IsEnabled="{Binding IsMp3Available}" />
+              </StackPanel>
+            </Border>
+          </Grid>
+        </Border>
+
+      </StackPanel>
+    </Border>
+
+    <!-- Apparence et confort -->
+    <TextBlock Text="{loc:Loc Settings_Section_Appearance}"
+               Margin="4,8,0,0"
+               FontSize="12" FontWeight="SemiBold"
+               Foreground="{DynamicResource TextMutedBrush}" />
+    <Border Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusLg}">
+      <StackPanel>
+
+        <Grid ColumnDefinitions="*,Auto" Margin="16,12">
+          <TextBlock Grid.Column="0" Text="{loc:Loc Settings_Theme}"
+                     VerticalAlignment="Center" FontWeight="SemiBold"
+                     Foreground="{DynamicResource TextPrimaryBrush}" />
+          <Border Grid.Column="1"
+                  Background="{DynamicResource SurfaceAltBrush}"
+                  CornerRadius="{StaticResource RadiusMd}"
+                  Padding="4">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+              <Button Classes="segment"
+                      Classes.selected="{Binding IsThemeLight}"
+                      Content="{loc:Loc Settings_ThemeLight}"
+                      Command="{Binding SelectThemeCommand}"
+                      CommandParameter="{x:Static set:ThemeChoice.Light}" />
+              <Button Classes="segment"
+                      Classes.selected="{Binding IsThemeDark}"
+                      Content="{loc:Loc Settings_ThemeDark}"
+                      Command="{Binding SelectThemeCommand}"
+                      CommandParameter="{x:Static set:ThemeChoice.Dark}" />
+              <Button Classes="segment"
+                      Classes.selected="{Binding IsThemeSystem}"
+                      Content="{loc:Loc Settings_ThemeSystem}"
+                      Command="{Binding SelectThemeCommand}"
+                      CommandParameter="{x:Static set:ThemeChoice.System}" />
+            </StackPanel>
+          </Border>
+        </Grid>
+
+        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}">
+          <Grid ColumnDefinitions="*,Auto" Margin="16,12">
+            <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+              <TextBlock Text="{loc:Loc Settings_Clipboard}"
+                         FontWeight="SemiBold"
+                         Foreground="{DynamicResource TextPrimaryBrush}" />
+              <TextBlock Text="{loc:Loc Settings_ClipboardHelp}"
+                         FontSize="13" TextWrapping="Wrap"
+                         Foreground="{DynamicResource TextMutedBrush}" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="1"
+                          Margin="16,0,0,0"
+                          OnContent="" OffContent=""
+                          IsChecked="{Binding ClipboardDetection}"
+                          AutomationProperties.Name="{loc:Loc Settings_Clipboard}" />
+          </Grid>
+        </Border>
+
+      </StackPanel>
+    </Border>
+
+  </StackPanel>
+</UserControl>

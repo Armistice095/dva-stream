@@ -1,8 +1,12 @@
+using DvaStream.App.Platform;
 using DvaStream.App.ViewModels;
 using DvaStream.Core.Platform;
+using DvaStream.Core.Settings;
 using DvaStream.Core.Urls;
 using DvaStream.Infrastructure.DependencyInjection;
+using DvaStream.Infrastructure.Settings;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DvaStream.App.Composition;
 
@@ -16,9 +20,19 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton(platform);
         services.AddDvaStreamInfrastructure(platform.Directories.LogsDirectory);
+        services.AddSingleton<ISettingsStore>(sp => new JsonSettingsStore(
+            Path.Combine(platform.Directories.ConfigDirectory, "settings.json"),
+            AppSettings.CreateDefaults(DefaultDownloadFolder()),
+            sp.GetService<ILogger<JsonSettingsStore>>()));
+        services.AddSingleton<IFolderPicker, AvaloniaFolderPicker>();
+        services.AddSingleton<ThemeService>();
+        services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<IUrlParser, UrlParser>();
         services.AddSingleton<UrlInputViewModel>();
         services.AddSingleton<MainViewModel>();
         return services;
     }
+
+    private static string DefaultDownloadFolder() =>
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 }

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DvaStream.Core.Errors;
 using DvaStream.Core.Media;
+using DvaStream.Core.Settings;
 using DvaStream.Core.Urls;
 using Microsoft.Extensions.Logging;
 
@@ -15,39 +16,86 @@ public sealed class MainViewModel : ObservableObject
 {
     private readonly IMediaSource _source;
     private readonly IThumbnailLoader _thumbnails;
+    private readonly ISettingsStore _settings;
     private readonly ILogger<MainViewModel> _logger;
     private MainState _state = MainState.Idle;
+    private AppPage _page = AppPage.Home;
     private CancellationTokenSource? _analysisCts;
     private CancellationTokenSource? _thumbnailCts;
     private Task _analysis = Task.CompletedTask;
     private Task _thumbnail = Task.CompletedTask;
+    private Task _preferenceSave = Task.CompletedTask;
+    private readonly SynchronizationContext? _ui = SynchronizationContext.Current;
 
     public MainViewModel(
         UrlInputViewModel urlInput,
         IMediaSource source,
         IThumbnailLoader thumbnails,
+        ISettingsStore settings,
+        SettingsViewModel settingsPage,
         ILogger<MainViewModel> logger)
     {
         ArgumentNullException.ThrowIfNull(urlInput);
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(thumbnails);
+        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(settingsPage);
         ArgumentNullException.ThrowIfNull(logger);
 
         UrlInput = urlInput;
         _source = source;
         _thumbnails = thumbnails;
+        _settings = settings;
+        Settings = settingsPage;
+        ToggleSettingsCommand = new RelayCommand(() => Page = Page == AppPage.Settings ? AppPage.Home : AppPage.Settings);
+        CloseSettingsCommand = new RelayCommand(() => Page = AppPage.Home);
         _logger = logger;
 
         UrlInput.AnalyzeRequested += (_, id) => _analysis = AnalyzeAsync(id);
         UrlInput.CancelRequested += (_, _) => _analysisCts?.Cancel();
+
+        // M3-06 : l'interrupteur du presse-papiers suit les paramètres, et le choix de qualité est mémorisé.
+        UrlInput.IsClipboardDetectionEnabled = _settings.Current.ClipboardDetection;
+        _settings.Changed += (_, s) => RunOnUi(() => UrlInput.IsClipboardDetectionEnabled = s.ClipboardDetection);
+        FormatSelector.ResolutionChosen += (_, height) => _preferenceSave = SaveHeightAsync(height);
     }
 
     public string Title => "DVA Stream";
 
     public UrlInputViewModel UrlInput { get; }
 
+    /// <summary>Écran Paramètres.</summary>
+    public SettingsViewModel Settings { get; }
+
+    /// <summary>Ouvre les paramètres, ou revient à l'accueil s'ils sont déjà ouverts.</summary>
+    public IRelayCommand ToggleSettingsCommand { get; }
+
+    /// <summary>Retour à l'accueil.</summary>
+    public IRelayCommand CloseSettingsCommand { get; }
+
+    /// <summary>Page affichée.</summary>
+    public AppPage Page
+    {
+        get => _page;
+        private set
+        {
+            if (SetProperty(ref _page, value))
+            {
+                OnPropertyChanged(nameof(IsHomePage));
+                OnPropertyChanged(nameof(IsSettingsPage));
+            }
+        }
+    }
+
+    public bool IsHomePage => Page == AppPage.Home;
+
+    public bool IsSettingsPage => Page == AppPage.Settings;
+
     /// <summary>Carte de prévisualisation (masquée tant qu'il n'y a rien à montrer).</summary>
     public PreviewViewModel Preview { get; } = new();
+
+    /// <summary>Choix du mode, de la qualité et du format audio (affiché une fois la vidéo analysée).</summary>
+    public FormatSelectorViewModel FormatSelector { get; } = new();
 
     public MainState State
     {
@@ -65,6 +113,9 @@ public sealed class MainViewModel : ObservableObject
 
     /// <summary>Tâche de la dernière analyse lancée par l'interface (terminée si aucune) ; utile aux tests.</summary>
     public Task AnalysisCompletion => _analysis;
+
+    /// <summary>Tâche du dernier enregistrement de préférence (terminée si aucun) ; utile aux tests.</summary>
+    public Task PreferenceSaveCompletion => _preferenceSave;
 
     /// <summary>Tâche du dernier chargement de miniature (terminée si aucun) ; utile aux tests.</summary>
     public Task ThumbnailCompletion => _thumbnail;
@@ -88,6 +139,7 @@ public sealed class MainViewModel : ObservableObject
         _analysisCts = cts;
         State = MainState.Analyzing;
         Preview.ShowLoading();
+        FormatSelector.Clear();
         UrlInput.IsBusy = true;
 
         try
@@ -96,6 +148,7 @@ public sealed class MainViewModel : ObservableObject
             var info = await _source.GetInfoAsync(id, cts.Token);
             _logger.LogInformation("Analyse terminée : « {Title} ».", info.Title);
             Preview.ShowInfo(info);
+            FormatSelector.Configure(info, _settings.Current.PreferredHeight, _settings.Current.PreferredAudio);
             State = MainState.Ready;
             StartThumbnail(info);
         }
@@ -154,6 +207,34 @@ public sealed class MainViewModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Miniature non chargée.");
+        }
+    }
+
+    private async Task SaveHeightAsync(int height)
+    {
+        try
+        {
+            if (_settings.Current.PreferredHeight != height)
+            {
+                await _settings.SaveAsync(_settings.Current with { PreferredHeight = height }, CancellationToken.None);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Préférence de qualité non enregistrée.");
+        }
+    }
+
+    // Le magasin peut signaler un changement depuis un autre thread : on revient sur le fil de l'interface.
+    private void RunOnUi(Action action)
+    {
+        if (_ui is null)
+        {
+            action();
+        }
+        else
+        {
+            _ui.Post(_ => action(), null);
         }
     }
 

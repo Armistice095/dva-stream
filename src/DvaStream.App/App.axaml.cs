@@ -26,6 +26,8 @@ public partial class App : Application
             .AddDvaStream(new PlatformServices())
             .BuildServiceProvider();
 
+        _services.GetRequiredService<ThemeService>().Start();
+
         var logger = _services.GetRequiredService<ILogger<App>>();
         logger.LogInformation("DVA Stream démarré (version {Version}).", typeof(App).Assembly.GetName().Version);
 

@@ -73,7 +73,7 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 
 ## M2 — Prévisualisation (FR-10 à FR-13, FR-50)
 
-> **État au 2026-11-21 :** Essai manuel réussi avec le vrai yt-dlp (vidéos réelles, miniature, titres accentués, vidéo supprimée, thèmes clair et sombre, FR/EN). Cochés : M2-01 (7 fixtures ; manquent privée / restreinte âge / bloquée région, faute d'exemple : motifs posés d'après yt-dlp, non vérifiés sur sortie réelle), M2-02 à M2-07, M2-09 à M2-12. **Restent** : M2-08 (CI à confirmer sur le commit qui contient les tests d'intégration) et M2-13 (clôture : à cocher dès que M2-08 l'est ; le spike S1 est entamé, voir D-031).
+> **Jalon M2 clos le 2026-11-21** : toutes les cases cochées, CI verte sur les 3 OS (commit « Clôture M2 », 23eb353). Réserve consignée : fixtures de vidéo privée / restreinte par l'âge / bloquée par région non enregistrées (pas d'exemple disponible) ; les motifs d'erreur correspondants reposent sur la connaissance de yt-dlp. Spike S1 entamé (JOURNAL D-031), à finir en M4-01.
 
 - [x] **M2-01 Fixtures réelles** — enregistrer des sorties JSON de `yt-dlp --dump-single-json` : vidéo standard, longue, courte, privée, supprimée, restreinte par l'âge, bloquée par région ; stockées dans `tests/.../Fixtures/`. *Fait quand :* au moins 6 fixtures versionnées. · M · Dép : M0-01 · *Outil :* `tools/record-fixtures.ps1` + `tools/fixtures/cases.json` (adresses signées retirées avant écriture ; les cas sans URL sont ignorés).
 - [x] **M2-02 Modèles du domaine** — `MediaInfo`, `MediaStream`, `StreamKind` (TDD §4) ; début de `AppError` / `ErrorKind`. *Fait quand :* types compilés. · S · Dép : M0-01 · *Déjà fait en M1 (D-025) :* `MediaInfo`, `MediaStream`, `StreamKind` ; **reste** `AppError` / `ErrorKind`.
@@ -82,18 +82,20 @@ Chemin critique : **M0 → M1 → M2 → M3 → M4** donne le premier téléchar
 - [x] **M2-05 DTO et mapping JSON** — `YtDlpInfoDto`, désérialisation tolérante (champs absents), mapping vers `MediaInfo`. *Fait quand :* toutes les fixtures valides se mappent correctement. · M · Dép : M2-01, M2-02
 - [x] **M2-06 `YtDlpMediaSource.GetInfoAsync`** — commande `--dump-single-json --no-playlist --no-warnings`, annulation, délai maximal, journalisation ; **remplace `SimulatedMediaSource`** (faux moteur de M1-10, D-025) dans l'enregistrement DI. *Fait quand :* retourne un `MediaInfo` réel sur une vidéo publique (test manuel). · M · Dép : M2-03, M2-04, M2-05
 - [x] **M2-07 `YtDlpErrorMapper` v1** — vidéo privée, supprimée, restreinte (âge/région), réseau ; motifs testés sur sorties enregistrées. *Fait quand :* chaque fixture d'erreur donne le bon `ErrorKind`. · M · Dép : M2-01, M2-02
-- [ ] **M2-08 Tests d'intégration du moteur** — faux exécutable qui rejoue les fixtures ; tests du succès, des erreurs, de l'annulation, du délai dépassé. *Fait quand :* tests verts sur les 3 OS en CI. · M · Dép : M2-06, M2-07
+- [x] **M2-08 Tests d'intégration du moteur** — faux exécutable qui rejoue les fixtures ; tests du succès, des erreurs, de l'annulation, du délai dépassé. *Fait quand :* tests verts sur les 3 OS en CI. · M · Dép : M2-06, M2-07
 - [x] **M2-09 Chargement des miniatures** — `IThumbnailLoader` (HTTP, cache mémoire borné, annulation). *Fait quand :* une miniature s'affiche, un échec de chargement ne bloque pas la carte. · S · Dép : M0-04
 - [x] **M2-10 Résolutions disponibles (FR-12)** — calcul dans `Core` : liste triée des hauteurs réellement offertes (en déduisant les flux vidéo avec ou sans audio). *Fait quand :* tests sur plusieurs fixtures. · M · Dép : M2-05
 - [x] **M2-11 `PreviewViewModel` et `PreviewView`** — miniature, titre, chaîne, durée `h:mm:ss`, état de chargement, bouton Annuler (FR-11), états vide/chargement/succès/erreur. *Fait quand :* les 4 états s'affichent. · L · Dép : M2-09, M2-10, M1-08
 - [x] **M2-12 Erreurs de prévisualisation (FR-13)** — messages clairs pour privée/supprimée/restreinte/réseau via `ErrorKind` + clés de ressources. *Fait quand :* chaque cas affiche un message distinct avec action suggérée. · S · Dép : M2-07, M1-04
-- [ ] **M2-13 Intégration et clôture** — `MainViewModel` : `Analyze → Preview` avec le vrai moteur ; spike **S1** commencé (essai de format MP4 1080p) ; vérification FR-10 à FR-13 et FR-50 ; mise à jour de `PLAN.md` et `JOURNAL.md`. · M · Dép : M2-11, M2-12
+- [x] **M2-13 Intégration et clôture** — `MainViewModel` : `Analyze → Preview` avec le vrai moteur ; spike **S1** commencé (essai de format MP4 1080p) ; vérification FR-10 à FR-13 et FR-50 ; mise à jour de `PLAN.md` et `JOURNAL.md`. · M · Dép : M2-11, M2-12
 
 **Fin de M2 :** coller une URL affiche miniature, titre, chaîne, durée en moins de 3 secondes (réseau normal).
 
 ---
 
 ## M3 — Formats et paramètres (FR-20 à FR-22, FR-60, FR-61)
+
+> **État au 2026-11-21 :** 420 tests verts en local (build OK). **À cocher après la CI** : M3-01 à M3-05, M3-06 (comportement du presse-papiers à confirmer à l'écran) et M3-09. M3-07 est **écrit, non vérifié** (écran Paramètres, thème appliqué à chaud). M3-08 (habillage final) attend la validation des maquettes d'écrans.
 
 - [ ] **M3-01 `AppSettings` et `ISettingsStore`** — enregistrement JSON versionné (`SchemaVersion`), valeurs par défaut, écriture atomique, verrou asynchrone, événement `Changed`. *Fait quand :* lecture/écriture testées. · M · Dép : M2-03
 - [ ] **M3-02 Robustesse des paramètres** — fichier corrompu → valeurs par défaut + sauvegarde `.bak` ; migration entre versions. *Fait quand :* tests sur fichiers corrompus et anciens. · S · Dép : M3-01

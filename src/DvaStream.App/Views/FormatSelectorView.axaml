@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DvaStream.App.ViewModels"
+             xmlns:loc="using:DvaStream.App.Localization"
+             x:Class="DvaStream.App.Views.FormatSelectorView"
+             x:DataType="vm:FormatSelectorViewModel"
+             IsVisible="{Binding IsConfigured}">
+
+  <Border Background="{DynamicResource SurfaceBrush}"
+          BorderBrush="{DynamicResource BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="{StaticResource RadiusLg}"
+          Padding="16">
+    <StackPanel Spacing="{StaticResource Space4}">
+
+      <!-- Mode : Vidéo / Audio seul -->
+      <Border HorizontalAlignment="Left"
+              Background="{DynamicResource SurfaceAltBrush}"
+              CornerRadius="{StaticResource RadiusMd}"
+              Padding="4">
+        <StackPanel Orientation="Horizontal" Spacing="4">
+          <Button Classes="segment"
+                  Classes.selected="{Binding IsVideoMode}"
+                  Content="{loc:Loc Format_Video}"
+                  Command="{Binding SelectVideoCommand}" />
+          <Button Classes="segment"
+                  Classes.selected="{Binding IsAudioMode}"
+                  Content="{loc:Loc Format_Audio}"
+                  Command="{Binding SelectAudioCommand}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Vidéo : qualité (uniquement les résolutions réellement disponibles) -->
+      <StackPanel Spacing="{StaticResource Space2}" IsVisible="{Binding ShowQuality}">
+        <TextBlock Text="{loc:Loc Format_Quality}"
+                   FontSize="14" FontWeight="SemiBold"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+        <ComboBox MinWidth="200"
+                  Height="{StaticResource SelectHeight}"
+                  ItemsSource="{Binding Resolutions}"
+                  SelectedItem="{Binding SelectedResolution}"
+                  AutomationProperties.Name="{loc:Loc Format_Quality}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:ResolutionOption">
+              <TextBlock Text="{Binding Label}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="{Binding FallbackNote}"
+                   IsVisible="{Binding HasFallbackNote}"
+                   FontSize="13"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource WarningBrush}" />
+      </StackPanel>
+
+      <!-- Audio seul : format -->
+      <StackPanel Spacing="{StaticResource Space2}" IsVisible="{Binding ShowAudioOptions}">
+        <TextBlock Text="{loc:Loc Format_AudioFormat}"
+                   FontSize="14" FontWeight="SemiBold"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+        <Border HorizontalAlignment="Left"
+                Background="{DynamicResource SurfaceAltBrush}"
+                CornerRadius="{StaticResource RadiusMd}"
+                Padding="4">
+          <StackPanel Orientation="Horizontal" Spacing="4">
+            <Button Classes="segment selected" Content="{loc:Loc Format_M4a}" />
+            <Button Classes="segment"
+                    Content="{loc:Loc Format_Mp3Soon}"
+                    IsEnabled="{Binding IsMp3Available}" />
+          </StackPanel>
+        </Border>
+        <TextBlock Text="{loc:Loc Format_Mp3Note}"
+                   FontSize="13"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+      </StackPanel>
+
+    </StackPanel>
+  </Border>
+</UserControl>

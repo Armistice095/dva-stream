@@ -1,8 +1,10 @@
 using DvaStream.App.Localization;
+using DvaStream.App.Platform;
 using DvaStream.App.ViewModels;
 using DvaStream.Core.Errors;
 using DvaStream.Core.Media;
 using DvaStream.Core.Platform;
+using DvaStream.Core.Settings;
 using DvaStream.Core.Urls;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
@@ -17,13 +19,17 @@ public sealed class MainViewModelTests
 
     private readonly IMediaSource _source = Substitute.For<IMediaSource>();
     private readonly IThumbnailLoader _thumbnails = Substitute.For<IThumbnailLoader>();
+    private readonly ISettingsStore _settings = Substitute.For<ISettingsStore>();
+    private readonly SettingsViewModel _settingsPage;
     private readonly UrlInputViewModel _urlInput = new(new UrlParser(), Substitute.For<IPlatformServices>());
     private readonly MainViewModel _vm;
 
     public MainViewModelTests()
     {
         _source.Name.Returns("Faux moteur");
-        _vm = new MainViewModel(_urlInput, _source, _thumbnails, NullLogger<MainViewModel>.Instance);
+        _settings.Current.Returns(AppSettings.CreateDefaults("dossier"));
+        _settingsPage = new SettingsViewModel(_settings, Substitute.For<IFolderPicker>());
+        _vm = new MainViewModel(_urlInput, _source, _thumbnails, _settings, _settingsPage, NullLogger<MainViewModel>.Instance);
     }
 
     private static VideoId SomeId()
@@ -185,6 +191,118 @@ public sealed class MainViewModelTests
     }
 
     [Fact]
+    public async Task Le_selecteur_de_format_suit_l_analyse()
+    {
+        var info = SomeInfo() with
+        {
+            Streams = [new MediaStream("137", StreamKind.Video, 1080, "mp4", "avc1", null, null, 25),
+                       new MediaStream("140", StreamKind.Audio, null, "m4a", null, "mp4a", null, null)],
+        };
+        var pending = PendingSource();
+
+        var analysis = _vm.AnalyzeAsync(SomeId());
+        Assert.False(_vm.FormatSelector.IsConfigured);
+
+        pending.SetResult(info);
+        await analysis;
+
+        Assert.True(_vm.FormatSelector.IsConfigured);
+        Assert.Equal(1080, _vm.FormatSelector.SelectedHeight);
+
+        _source.GetInfoAsync(Arg.Any<VideoId>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<MediaInfo>(new InvalidOperationException("x")));
+        await _vm.AnalyzeAsync(SomeId());
+
+        Assert.False(_vm.FormatSelector.IsConfigured);
+    }
+
+    private static MediaInfo InfoWith(params int[] heights) => SomeInfo() with
+    {
+        Streams = heights.Select(h => new MediaStream($"v{h}", StreamKind.Video, h, "mp4", "avc1", null, null, 25))
+            .Append(new MediaStream("a", StreamKind.Audio, null, "m4a", null, "mp4a", null, null))
+            .ToList(),
+    };
+
+    [Fact]
+    public void La_detection_du_presse_papiers_suit_les_parametres_des_le_demarrage()
+    {
+        var settings = Substitute.For<ISettingsStore>();
+        settings.Current.Returns(AppSettings.CreateDefaults("d") with { ClipboardDetection = false });
+
+        var vm = new MainViewModel(_urlInput, _source, _thumbnails, settings, _settingsPage, NullLogger<MainViewModel>.Instance);
+
+        Assert.False(vm.UrlInput.IsClipboardDetectionEnabled);
+    }
+
+    [Fact]
+    public void Un_changement_de_parametres_met_a_jour_la_detection_du_presse_papiers()
+    {
+        Assert.True(_urlInput.IsClipboardDetectionEnabled);
+
+        _settings.Changed += Raise.Event<EventHandler<AppSettings>>(_settings, AppSettings.CreateDefaults("d") with { ClipboardDetection = false });
+        Assert.False(_urlInput.IsClipboardDetectionEnabled);
+
+        _settings.Changed += Raise.Event<EventHandler<AppSettings>>(_settings, AppSettings.CreateDefaults("d"));
+        Assert.True(_urlInput.IsClipboardDetectionEnabled);
+    }
+
+    [Fact]
+    public async Task Choisir_une_resolution_memorise_la_preference()
+    {
+        _source.GetInfoAsync(Arg.Any<VideoId>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(InfoWith(1080, 720, 480)));
+        await _vm.AnalyzeAsync(SomeId());
+
+        _vm.FormatSelector.SelectedResolution = _vm.FormatSelector.Resolutions.Single(r => r.Height == 480);
+        await _vm.PreferenceSaveCompletion;
+
+        await _settings.Received(1).SaveAsync(Arg.Is<AppSettings>(a => a.PreferredHeight == 480), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task Le_repli_automatique_ne_modifie_pas_la_preference()
+    {
+        _source.GetInfoAsync(Arg.Any<VideoId>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(InfoWith(240)));
+
+        await _vm.AnalyzeAsync(SomeId());
+        await _vm.PreferenceSaveCompletion;
+
+        Assert.Equal(240, _vm.FormatSelector.SelectedHeight);
+        await _settings.DidNotReceiveWithAnyArgs().SaveAsync(default!, default);
+    }
+
+    [Fact]
+    public async Task Un_echec_d_enregistrement_de_la_preference_ne_plante_pas()
+    {
+        _source.GetInfoAsync(Arg.Any<VideoId>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(InfoWith(1080, 720)));
+        _settings.SaveAsync(Arg.Any<AppSettings>(), Arg.Any<CancellationToken>()).Returns(Task.FromException(new IOException("disque plein")));
+        await _vm.AnalyzeAsync(SomeId());
+
+        _vm.FormatSelector.SelectedResolution = _vm.FormatSelector.Resolutions.Single(r => r.Height == 720);
+
+        await _vm.PreferenceSaveCompletion;
+        Assert.Equal(MainState.Ready, _vm.State);
+    }
+
+    [Fact]
+    public void La_navigation_ouvre_et_ferme_les_parametres()
+    {
+        Assert.True(_vm.IsHomePage);
+        Assert.False(_vm.IsSettingsPage);
+
+        _vm.ToggleSettingsCommand.Execute(null);
+        Assert.Equal(AppPage.Settings, _vm.Page);
+        Assert.True(_vm.IsSettingsPage);
+        Assert.False(_vm.IsHomePage);
+
+        _vm.ToggleSettingsCommand.Execute(null);
+        Assert.True(_vm.IsHomePage);
+
+        _vm.ToggleSettingsCommand.Execute(null);
+        _vm.CloseSettingsCommand.Execute(null);
+        Assert.True(_vm.IsHomePage);
+    }
+
+    [Fact]
     public async Task La_miniature_est_chargee_apres_l_affichage_de_la_carte()
     {
         var info = SomeInfo() with { ThumbnailUrl = new Uri("https://i.ytimg.com/vi/x/hq.jpg") };
@@ -264,9 +382,11 @@ public sealed class MainViewModelTests
     {
         var logger = NullLogger<MainViewModel>.Instance;
 
-        Assert.Throws<ArgumentNullException>(() => new MainViewModel(null!, _source, _thumbnails, logger));
-        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, null!, _thumbnails, logger));
-        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, null!, logger));
-        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, _thumbnails, null!));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(null!, _source, _thumbnails, _settings, _settingsPage, logger));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, null!, _thumbnails, _settings, _settingsPage, logger));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, null!, _settings, _settingsPage, logger));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, _thumbnails, null!, _settingsPage, logger));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, _thumbnails, _settings, null!, logger));
+        Assert.Throws<ArgumentNullException>(() => new MainViewModel(_urlInput, _source, _thumbnails, _settings, _settingsPage, null!));
     }
 }
