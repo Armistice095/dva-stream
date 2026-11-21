@@ -63,4 +63,73 @@
   <data name="Clip_Dismiss" xml:space="preserve">
     <value>Ignorer</value>
   </data>
+  <data name="Preview_Loading" xml:space="preserve">
+    <value>Analyse de la vidéo…</value>
+  </data>
+  <data name="Err_VideoPrivate_Message" xml:space="preserve">
+    <value>Cette vidéo est privée.</value>
+  </data>
+  <data name="Err_VideoPrivate_Action" xml:space="preserve">
+    <value>Seul son auteur peut la voir. Demandez-lui de la rendre non répertoriée ou publique, puis réessayez.</value>
+  </data>
+  <data name="Err_VideoUnavailable_Message" xml:space="preserve">
+    <value>Cette vidéo n’est plus disponible.</value>
+  </data>
+  <data name="Err_VideoUnavailable_Action" xml:space="preserve">
+    <value>Elle a peut-être été supprimée ou retirée. Vérifiez le lien.</value>
+  </data>
+  <data name="Err_VideoRestricted_Message" xml:space="preserve">
+    <value>Cette vidéo est soumise à une restriction.</value>
+  </data>
+  <data name="Err_VideoRestricted_Action" xml:space="preserve">
+    <value>Elle peut être limitée par l’âge, par la région ou réservée à des membres : elle ne peut pas être téléchargée ici.</value>
+  </data>
+  <data name="Err_Network_Message" xml:space="preserve">
+    <value>Connexion impossible.</value>
+  </data>
+  <data name="Err_Network_Action" xml:space="preserve">
+    <value>Vérifiez votre connexion Internet, puis réessayez.</value>
+  </data>
+  <data name="Err_Timeout_Message" xml:space="preserve">
+    <value>YouTube met trop de temps à répondre.</value>
+  </data>
+  <data name="Err_Timeout_Action" xml:space="preserve">
+    <value>Réessayez dans un instant.</value>
+  </data>
+  <data name="Err_RateLimited_Message" xml:space="preserve">
+    <value>YouTube limite temporairement les requêtes.</value>
+  </data>
+  <data name="Err_RateLimited_Action" xml:space="preserve">
+    <value>Patientez quelques minutes avant de réessayer.</value>
+  </data>
+  <data name="Err_EngineMissing_Message" xml:space="preserve">
+    <value>Le moteur de téléchargement est introuvable.</value>
+  </data>
+  <data name="Err_EngineMissing_Action" xml:space="preserve">
+    <value>Réinstallez l’application. En développement : lancez tools/fetch-binaries.ps1.</value>
+  </data>
+  <data name="Err_EngineBroken_Message" xml:space="preserve">
+    <value>Le moteur de téléchargement ne répond pas correctement.</value>
+  </data>
+  <data name="Err_EngineBroken_Action" xml:space="preserve">
+    <value>Réessayez. Si le problème persiste, mettez le moteur à jour.</value>
+  </data>
+  <data name="Err_UnsupportedPlaylist_Message" xml:space="preserve">
+    <value>Les playlists ne sont pas prises en charge dans cette version.</value>
+  </data>
+  <data name="Err_UnsupportedPlaylist_Action" xml:space="preserve">
+    <value>Collez le lien d’une vidéo seule.</value>
+  </data>
+  <data name="Err_InvalidUrl_Message" xml:space="preserve">
+    <value>Ce lien n’est pas reconnu.</value>
+  </data>
+  <data name="Err_InvalidUrl_Action" xml:space="preserve">
+    <value>Vérifiez qu’il s’agit d’un lien vidéo YouTube.</value>
+  </data>
+  <data name="Err_Unknown_Message" xml:space="preserve">
+    <value>Une erreur inattendue est survenue.</value>
+  </data>
+  <data name="Err_Unknown_Action" xml:space="preserve">
+    <value>Réessayez. Les détails sont dans le fichier journal.</value>
+  </data>
 </root>

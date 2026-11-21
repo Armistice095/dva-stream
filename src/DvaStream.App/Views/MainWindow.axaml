@@ -48,6 +48,7 @@
                  Margin="0,0,0,12"
                  Foreground="{DynamicResource TextMutedBrush}" />
       <views:UrlInputView DataContext="{Binding UrlInput}" />
+      <views:PreviewView DataContext="{Binding Preview}" />
     </StackPanel>
 
   </DockPanel>

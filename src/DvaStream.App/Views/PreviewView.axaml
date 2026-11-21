@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DvaStream.App.ViewModels"
+             xmlns:views="using:DvaStream.App.Views"
+             xmlns:loc="using:DvaStream.App.Localization"
+             x:Class="DvaStream.App.Views.PreviewView"
+             x:DataType="vm:PreviewViewModel"
+             IsVisible="{Binding IsShown}">
+
+  <!-- Carte de prévisualisation : surface, bordure, rayon 16 (maquette). Quatre états exclusifs. -->
+  <Border Background="{DynamicResource SurfaceBrush}"
+          BorderBrush="{DynamicResource BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="{StaticResource RadiusLg}"
+          Padding="16">
+    <Panel>
+
+      <!-- Chargement -->
+      <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource Space4}" IsVisible="{Binding IsLoading}">
+        <Border Grid.Column="0" Width="192" Height="108"
+                Background="{DynamicResource SurfaceAltBrush}"
+                CornerRadius="{StaticResource RadiusMd}" />
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="{StaticResource Space3}">
+          <TextBlock Text="{loc:Loc Preview_Loading}"
+                     FontSize="16" FontWeight="SemiBold"
+                     Foreground="{DynamicResource TextPrimaryBrush}" />
+          <ProgressBar IsIndeterminate="True" Height="4"
+                       Foreground="{DynamicResource PrimaryBrush}"
+                       Background="{DynamicResource SurfaceAltBrush}" />
+        </StackPanel>
+      </Grid>
+
+      <!-- Succès -->
+      <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource Space4}" IsVisible="{Binding IsReady}">
+        <Panel Grid.Column="0" Width="192" Height="108">
+          <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="{StaticResource RadiusMd}" />
+          <Border CornerRadius="{StaticResource RadiusMd}" ClipToBounds="True">
+            <Image Source="{Binding ThumbnailBytes, Converter={x:Static views:BytesToBitmapConverter.Instance}}"
+                   Stretch="UniformToFill" />
+          </Border>
+          <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="6"
+                  Background="#CC000000" CornerRadius="{StaticResource RadiusXs}" Padding="6,2"
+                  IsVisible="{Binding HasDuration}">
+            <TextBlock Text="{Binding DurationText}" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+          </Border>
+        </Panel>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="{StaticResource Space2}">
+          <TextBlock Text="{Binding Title}"
+                     FontSize="18" FontWeight="Bold"
+                     TextWrapping="Wrap" MaxLines="3" TextTrimming="CharacterEllipsis"
+                     Foreground="{DynamicResource TextPrimaryBrush}" />
+          <TextBlock Text="{Binding Channel}"
+                     FontSize="14"
+                     TextTrimming="CharacterEllipsis"
+                     Foreground="{DynamicResource TextMutedBrush}" />
+        </StackPanel>
+      </Grid>
+
+      <!-- Erreur : message clair + action suggérée -->
+      <StackPanel Spacing="{StaticResource Space2}" IsVisible="{Binding IsError}">
+        <TextBlock Text="{Binding ErrorMessage}"
+                   FontSize="16" FontWeight="SemiBold"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource DangerBrush}" />
+        <TextBlock Text="{Binding ErrorAction}"
+                   FontSize="14"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+      </StackPanel>
+
+    </Panel>
+  </Border>
+</UserControl>
