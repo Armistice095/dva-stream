@@ -1,0 +1,4 @@
+À coller en haut de la section « ### 2026-11-19 » de docs/JOURNAL.md :
+
+- **[Claude] · M1-04, M1-05** — Écrits : `App/Localization/` (`Strings.resx` français par défaut, `Strings.en.resx`, accès typé `Strings`, extension AXAML `{loc:Loc Clé}`, `UrlErrorMessages` : une clé par `UrlInvalidReason` + playlist) ; texte de statut de la fenêtre principale passé en ressource ; langue forçable par la variable `DVASTREAM_LANG` (ex. `en`) pour les essais. Nouveau projet `tests/DvaStream.App.Tests` (ajouté à la solution) avec `StringsTests` : mêmes clés en FR et EN, un message par raison de refus. **Non compilé ici** : à valider par `dotnet build` / `dotnet test`, puis vérification à l'œil (français, puis `DVASTREAM_LANG=en`).
+- **[Armistice] · M1-01 à M1-03** — `dotnet test` local (Windows, .NET 10.0.15) : 127 tests verts, 0 échec. Reste : couverture de `UrlParser` et CI verte avant de cocher.

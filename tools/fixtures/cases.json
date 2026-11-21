@@ -1,0 +1,57 @@
+[
+  {
+    "name": "standard",
+    "expect": "success",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "note": "Vidéo publique standard (3 min 32)."
+  },
+  {
+    "name": "short",
+    "expect": "success",
+    "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    "note": "Vidéo très courte (19 s)."
+  },
+  {
+    "name": "long",
+    "expect": "success",
+    "url": "https://www.youtube.com/watch?v=ylswUDZVgWM",
+    "note": "À RENSEIGNER : une vidéo publique de plus d'1 heure (conférence, cours...)."
+  },
+  {
+    "name": "private",
+    "expect": "error",
+    "url": "https://youtu.be/EDFVl4EdwNQ",
+    "note": "À RENSEIGNER : le lien d'une vidéo privée (par ex. une de vos propres vidéos passée en « Privée »)."
+  },
+  {
+    "name": "deleted",
+    "expect": "error",
+    "url": "https://youtu.be/Wnht0JMLYP4",
+    "note": "À RENSEIGNER : le lien d'une vidéo supprimée (une vidéo que vous avez vous-même supprimée, par exemple)."
+  },
+  {
+    "name": "nonexistent",
+    "expect": "error",
+    "url": "https://www.youtube.com/watch?v=aaaaaaaaaaa",
+    "note": "Identifiant bien formé qui ne correspond (probablement) à aucune vidéo."
+  },
+  {
+    "name": "age-restricted",
+    "expect": "error",
+    "url": "",
+    "note": "À RENSEIGNER : une vidéo soumise à une restriction d'âge (sans compte connecté, yt-dlp doit la refuser)."
+  },
+  {
+    "name": "region-blocked",
+    "expect": "error",
+    "url": "",
+    "note": "À RENSEIGNER : une vidéo bloquée dans votre pays (« non disponible dans votre pays »)."
+  },
+  {
+    "name": "network",
+    "expect": "error",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "extraArgs": [ "--proxy", "http://127.0.0.1:9" ],
+    "note": "Panne réseau simulée : passage par un proxy local injoignable."
+  }
+]

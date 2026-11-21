@@ -1,0 +1,11 @@
+{
+    "exitCode":  1,
+    "stderr":  "ERROR: [youtube] aaaaaaaaaaa: This video is unavailable",
+    "ytDlpVersion":  "2026.10.26",
+    "arguments":  [
+                      "--dump-single-json",
+                      "--no-playlist",
+                      "--no-warnings",
+                      "https://www.youtube.com/watch?v=aaaaaaaaaaa"
+                  ]
+}

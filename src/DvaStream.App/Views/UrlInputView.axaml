@@ -1,0 +1,234 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DvaStream.App.ViewModels"
+             xmlns:loc="using:DvaStream.App.Localization"
+             x:Class="DvaStream.App.Views.UrlInputView"
+             x:DataType="vm:UrlInputViewModel">
+
+  <UserControl.Styles>
+
+    <!-- Champ : cadre dessiné par la bordure, le TextBox est sans bordure à l'intérieur (maquette : 56 px, rayon 12) -->
+    <Style Selector="Border.field">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="{StaticResource RadiusMd}" />
+      <Setter Property="Height" Value="{StaticResource UrlFieldHeight}" />
+      <Setter Property="Padding" Value="16,0,8,0" />
+    </Style>
+    <Style Selector="Border.field:focus-within">
+      <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="Padding" Value="15,0,7,0" />
+    </Style>
+    <Style Selector="Border.field.error">
+      <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="Padding" Value="15,0,7,0" />
+    </Style>
+
+    <Style Selector="TextBox.bare">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="MinHeight" Value="0" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+      <Style.Resources>
+        <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+        <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="Transparent" />
+        <Thickness x:Key="TextControlBorderThemeThickness">0</Thickness>
+        <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+      </Style.Resources>
+    </Style>
+    <!-- Le nom de la partie du gabarit a pu changer avec PlaceholderText : on couvre les deux. -->
+    <Style Selector="TextBox.bare /template/ TextBlock#PART_Watermark, TextBox.bare /template/ TextBlock#PART_PlaceholderText">
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+
+    <!-- Boutons (maquette : 40 px, rayon 8, texte 14 semi-gras) -->
+    <Style Selector="Button.primary, Button.secondary">
+      <Setter Property="Height" Value="{StaticResource ButtonHeight}" />
+      <Setter Property="Padding" Value="20,0" />
+      <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+    <!-- « En attente » : lien refusé. Même aspect que désactivé, mais cliquable (un clic explique le refus). -->
+    <Style Selector="Button.primary.pending /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+    <Style Selector="Button.secondary">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.secondary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="Button.icon">
+      <Setter Property="Width" Value="{StaticResource ButtonHeight}" />
+      <Setter Property="Height" Value="{StaticResource ButtonHeight}" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.icon:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.icon:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+    </Style>
+
+  </UserControl.Styles>
+
+  <StackPanel Spacing="{StaticResource Space4}">
+
+    <!-- Champ de saisie -->
+    <Border Classes="field" Classes.error="{Binding IsErrorVisible}">
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space3}">
+        <TextBox x:Name="UrlBox"
+                 Grid.Column="0"
+                 Classes="bare"
+                 Text="{Binding Text}"
+                 PlaceholderText="{loc:Loc Url_Placeholder}"
+                 IsReadOnly="{Binding IsBusy}"
+                 AutomationProperties.Name="{loc:Loc Url_Placeholder}">
+          <TextBox.KeyBindings>
+            <KeyBinding Gesture="Enter" Command="{Binding SubmitCommand}" />
+          </TextBox.KeyBindings>
+        </TextBox>
+
+        <Panel Grid.Column="1" VerticalAlignment="Center">
+          <!-- État vide ou valide : Analyser (désactivé tant que le lien n'est pas valide) -->
+          <Button Classes="primary"
+                  Classes.pending="{Binding IsAnalyzePending}"
+                  Content="{loc:Loc Url_Analyze}"
+                  Command="{Binding SubmitCommand}"
+                  IsVisible="{Binding IsAnalyzeVisible}" />
+
+          <!-- Pendant l'analyse : Annuler -->
+          <Button Classes="secondary"
+                  Content="{loc:Loc Url_Cancel}"
+                  Command="{Binding CancelCommand}"
+                  IsVisible="{Binding IsBusy}" />
+
+          <!-- Erreur affichée : ✕ efface le lien (Analyser est masqué) -->
+          <Button Classes="icon"
+                  Command="{Binding ClearCommand}"
+                  IsVisible="{Binding IsClearVisible}"
+                  ToolTip.Tip="{loc:Loc Url_Clear}"
+                  AutomationProperties.Name="{loc:Loc Url_Clear}">
+            <Path Data="M6,6 L18,18 M18,6 L6,18"
+                  Stroke="{DynamicResource TextMutedBrush}"
+                  StrokeThickness="1.8"
+                  StrokeLineCap="Round"
+                  Width="24" Height="24"
+                  Stretch="None" />
+          </Button>
+        </Panel>
+      </Grid>
+    </Border>
+
+    <!-- Message d'erreur sous le champ (Grid : le texte passe à la ligne au lieu d'être coupé) -->
+    <Grid ColumnDefinitions="Auto,*"
+          ColumnSpacing="8"
+          Margin="4,-6,4,0"
+          IsVisible="{Binding IsErrorVisible}">
+      <Border Grid.Column="0"
+              Width="16" Height="16"
+              CornerRadius="8"
+              BorderThickness="1.5"
+              BorderBrush="{DynamicResource DangerBrush}"
+              VerticalAlignment="Top"
+              Margin="0,2,0,0">
+        <TextBlock Text="!"
+                   FontSize="11" FontWeight="Bold"
+                   Foreground="{DynamicResource DangerBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+      <TextBlock Grid.Column="1"
+                 Text="{Binding ErrorMessage}"
+                 FontSize="13" FontWeight="Medium"
+                 TextWrapping="Wrap"
+                 Foreground="{DynamicResource DangerBrush}"
+                 AutomationProperties.LiveSetting="Assertive" />
+    </Grid>
+
+    <!-- Lien détecté dans le presse-papiers : proposé, jamais appliqué seul (FR-02) -->
+    <Border IsVisible="{Binding HasClipboardSuggestion}"
+            Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource AccentBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusMd}">
+      <Panel>
+        <Border Background="{DynamicResource AccentBrush}"
+                Opacity="0.08"
+                CornerRadius="{StaticResource RadiusMd}" />
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto"
+              ColumnSpacing="{StaticResource Space4}"
+              Margin="16">
+          <Path Grid.Column="0"
+                Data="M5,5 L19,5 L19,21 L5,21 Z M9,3 L15,3 L15,7 L9,7 Z"
+                Stroke="{DynamicResource AccentTextBrush}"
+                StrokeThickness="1.8"
+                StrokeJoin="Round"
+                Width="24" Height="24"
+                Stretch="None"
+                VerticalAlignment="Center" />
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+            <TextBlock Text="{loc:Loc Clip_Detected}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+            <TextBlock Text="{Binding ClipboardSuggestionDisplay}"
+                       FontSize="12" FontWeight="Medium"
+                       FontFeatures="+tnum"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="{DynamicResource TextMutedBrush}" />
+          </StackPanel>
+          <Button Grid.Column="2"
+                  Classes="secondary"
+                  Content="{loc:Loc Clip_Use}"
+                  Command="{Binding UseSuggestionCommand}" />
+          <Button Grid.Column="3"
+                  Classes="icon"
+                  Command="{Binding DismissSuggestionCommand}"
+                  ToolTip.Tip="{loc:Loc Clip_Dismiss}"
+                  AutomationProperties.Name="{loc:Loc Clip_Dismiss}">
+            <Path Data="M6,6 L18,18 M18,6 L6,18"
+                  Stroke="{DynamicResource TextMutedBrush}"
+                  StrokeThickness="1.8"
+                  StrokeLineCap="Round"
+                  Width="24" Height="24"
+                  Stretch="None" />
+          </Button>
+        </Grid>
+      </Panel>
+    </Border>
+
+  </StackPanel>
+</UserControl>

@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:DvaStream.App.ViewModels"
+        xmlns:views="using:DvaStream.App.Views"
+        xmlns:loc="using:DvaStream.App.Localization"
         x:Class="DvaStream.App.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Title="DVA Stream"
@@ -9,19 +11,44 @@
         Icon="/Assets/app-icon.ico"
         Background="{DynamicResource BgBrush}">
 
-  <StackPanel HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Spacing="{StaticResource Space4}">
-    <Image Source="/Assets/dva-stream-mark.png"
-           Width="96" Height="96"
-           HorizontalAlignment="Center" />
-    <TextBlock Text="{Binding Title}"
-               HorizontalAlignment="Center"
-               FontSize="32" FontWeight="Bold"
-               Foreground="{DynamicResource TextPrimaryBrush}" />
-    <TextBlock Text="{Binding Status}"
-               HorizontalAlignment="Center"
-               FontSize="12" FontWeight="Medium"
-               Foreground="{DynamicResource TextMutedBrush}" />
-  </StackPanel>
+  <!-- Racine focusable : un clic dans le vide lui donne le focus, ce qui le retire du champ de saisie. -->
+  <DockPanel x:Name="RootPanel" Focusable="True" Background="Transparent">
+
+    <!-- Barre supérieure (maquette : 56 px) -->
+    <Border DockPanel.Dock="Top"
+            Height="{StaticResource TopBarHeight}"
+            Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="0,0,0,1">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="{StaticResource Space3}"
+                  Margin="20,0"
+                  VerticalAlignment="Center">
+        <Image Source="/Assets/dva-stream-mark.png" Width="28" Height="28" />
+        <TextBlock Text="{Binding Title}"
+                   FontSize="16" FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextPrimaryBrush}" />
+      </StackPanel>
+    </Border>
+
+    <!-- Colonne de contenu (maquette : 640 px) -->
+    <StackPanel MaxWidth="{StaticResource ContentColumnWidth}"
+                Margin="24"
+                VerticalAlignment="Top"
+                Spacing="{StaticResource Space4}">
+      <TextBlock Text="{loc:Loc Main_Heading}"
+                 Margin="0,32,0,0"
+                 FontSize="32" FontWeight="Bold"
+                 TextWrapping="Wrap"
+                 Foreground="{DynamicResource TextPrimaryBrush}" />
+      <TextBlock Text="{loc:Loc Main_Lead}"
+                 FontSize="16"
+                 TextWrapping="Wrap"
+                 Margin="0,0,0,12"
+                 Foreground="{DynamicResource TextMutedBrush}" />
+      <views:UrlInputView DataContext="{Binding UrlInput}" />
+    </StackPanel>
+
+  </DockPanel>
 </Window>

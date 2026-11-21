@@ -9,6 +9,13 @@
     <ProjectReference Include="..\..\src\DvaStream.Infrastructure\DvaStream.Infrastructure.csproj" />
     <!-- Référencé pour le test d'architecture : l'assembly App doit être présente dans le dossier de sortie. -->
     <ProjectReference Include="..\..\src\DvaStream.App\DvaStream.App.csproj" />
+    <!-- Petit exécutable lancé par les tests de l'exécuteur de processus (M2-04) : copié dans le dossier de sortie. -->
+    <ProjectReference Include="..\DvaStream.TestProcess\DvaStream.TestProcess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Sorties réelles de yt-dlp enregistrées par tools/record-fixtures.ps1 (M2-01). -->
+    <None Update="Fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,7 +5,9 @@
     <Project Path="src/DvaStream.App/DvaStream.App.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/DvaStream.App.Tests/DvaStream.App.Tests.csproj" />
     <Project Path="tests/DvaStream.Core.Tests/DvaStream.Core.Tests.csproj" />
     <Project Path="tests/DvaStream.Infrastructure.Tests/DvaStream.Infrastructure.Tests.csproj" />
+    <Project Path="tests/DvaStream.TestProcess/DvaStream.TestProcess.csproj" />
   </Folder>
 </Solution>

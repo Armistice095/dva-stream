@@ -1,0 +1,11 @@
+{
+    "exitCode":  1,
+    "stderr":  "ERROR: [youtube] Wnht0JMLYP4: This video has been removed for violating YouTube\u0027s policy on harassment and bullying",
+    "ytDlpVersion":  "2026.10.26",
+    "arguments":  [
+                      "--dump-single-json",
+                      "--no-playlist",
+                      "--no-warnings",
+                      "https://youtu.be/Wnht0JMLYP4"
+                  ]
+}

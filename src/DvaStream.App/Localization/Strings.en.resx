@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Main_Status" xml:space="preserve">
+    <value>Foundations in place (milestone M0)</value>
+  </data>
+  <data name="UrlError_Empty" xml:space="preserve">
+    <value>Paste the link of a YouTube video.</value>
+  </data>
+  <data name="UrlError_NotAUrl" xml:space="preserve">
+    <value>This text is not a link. Paste the full address of a YouTube video, for example https://www.youtube.com/watch?v=…</value>
+  </data>
+  <data name="UrlError_UnsupportedScheme" xml:space="preserve">
+    <value>Only links starting with http:// or https:// are accepted.</value>
+  </data>
+  <data name="UrlError_UnsupportedHost" xml:space="preserve">
+    <value>This link is not from YouTube. Paste a youtube.com or youtu.be link.</value>
+  </data>
+  <data name="UrlError_UnrecognizedFormat" xml:space="preserve">
+    <value>This YouTube link does not point to a video. Paste the link of a video or a Short.</value>
+  </data>
+  <data name="UrlError_InvalidVideoId" xml:space="preserve">
+    <value>The video identifier looks incomplete or incorrect. Make sure you copied the whole link.</value>
+  </data>
+  <data name="UrlError_Playlist" xml:space="preserve">
+    <value>Playlists are not supported in this version.</value>
+  </data>
+  <data name="Main_Heading" xml:space="preserve">
+    <value>Paste a link, get your video.</value>
+  </data>
+  <data name="Main_Lead" xml:space="preserve">
+    <value>Copy the address of a YouTube video, paste it here, pick the quality. That’s it.</value>
+  </data>
+  <data name="Url_Placeholder" xml:space="preserve">
+    <value>Paste the address of a YouTube video here</value>
+  </data>
+  <data name="Url_Analyze" xml:space="preserve">
+    <value>Analyze</value>
+  </data>
+  <data name="Url_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Url_Clear" xml:space="preserve">
+    <value>Clear the link</value>
+  </data>
+  <data name="Clip_Detected" xml:space="preserve">
+    <value>Link detected in your clipboard</value>
+  </data>
+  <data name="Clip_Use" xml:space="preserve">
+    <value>Use this link</value>
+  </data>
+  <data name="Clip_Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+  </data>
+</root>

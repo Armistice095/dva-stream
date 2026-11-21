@@ -1,0 +1,13 @@
+{
+    "exitCode":  1,
+    "stderr":  "ERROR: [youtube] dQw4w9WgXcQ: Unable to download API page: (\u0027Unable to connect to proxy\u0027, NewConnectionError(\"HTTPSConnection(host=\u0027127.0.0.1\u0027, port=9): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it\")) (caused by ProxyError(\u0027(\\\u0027Unable to connect to proxy\\\u0027, NewConnectionError(\"HTTPSConnection(host=\\\u0027127.0.0.1\\\u0027, port=9): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it\"))\u0027)); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U",
+    "ytDlpVersion":  "2026.10.26",
+    "arguments":  [
+                      "--dump-single-json",
+                      "--no-playlist",
+                      "--no-warnings",
+                      "--proxy",
+                      "http://127.0.0.1:9",
+                      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  ]
+}

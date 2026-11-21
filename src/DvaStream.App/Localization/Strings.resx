@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Main_Status" xml:space="preserve">
+    <value>Fondations en place (jalon M0)</value>
+  </data>
+  <data name="UrlError_Empty" xml:space="preserve">
+    <value>Collez le lien d'une vidéo YouTube.</value>
+  </data>
+  <data name="UrlError_NotAUrl" xml:space="preserve">
+    <value>Ce texte n'est pas un lien. Collez l'adresse complète d'une vidéo YouTube, par exemple https://www.youtube.com/watch?v=…</value>
+  </data>
+  <data name="UrlError_UnsupportedScheme" xml:space="preserve">
+    <value>Seuls les liens commençant par http:// ou https:// sont acceptés.</value>
+  </data>
+  <data name="UrlError_UnsupportedHost" xml:space="preserve">
+    <value>Ce lien ne vient pas de YouTube. Collez un lien youtube.com ou youtu.be.</value>
+  </data>
+  <data name="UrlError_UnrecognizedFormat" xml:space="preserve">
+    <value>Ce lien YouTube ne désigne pas une vidéo. Collez le lien d'une vidéo ou d'un Short.</value>
+  </data>
+  <data name="UrlError_InvalidVideoId" xml:space="preserve">
+    <value>L'identifiant de la vidéo semble incomplet ou incorrect. Vérifiez que vous avez copié le lien en entier.</value>
+  </data>
+  <data name="UrlError_Playlist" xml:space="preserve">
+    <value>Les playlists ne sont pas prises en charge dans cette version.</value>
+  </data>
+  <data name="Main_Heading" xml:space="preserve">
+    <value>Collez un lien, récupérez votre vidéo.</value>
+  </data>
+  <data name="Main_Lead" xml:space="preserve">
+    <value>Copiez l’adresse d’une vidéo YouTube, collez-la ici, choisissez la qualité. C’est tout.</value>
+  </data>
+  <data name="Url_Placeholder" xml:space="preserve">
+    <value>Collez ici l’adresse d’une vidéo YouTube</value>
+  </data>
+  <data name="Url_Analyze" xml:space="preserve">
+    <value>Analyser</value>
+  </data>
+  <data name="Url_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Url_Clear" xml:space="preserve">
+    <value>Effacer le lien</value>
+  </data>
+  <data name="Clip_Detected" xml:space="preserve">
+    <value>Lien détecté dans votre presse-papiers</value>
+  </data>
+  <data name="Clip_Use" xml:space="preserve">
+    <value>Utiliser ce lien</value>
+  </data>
+  <data name="Clip_Dismiss" xml:space="preserve">
+    <value>Ignorer</value>
+  </data>
+</root>

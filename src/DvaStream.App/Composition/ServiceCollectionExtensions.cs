@@ -1,5 +1,6 @@
 using DvaStream.App.ViewModels;
 using DvaStream.Core.Platform;
+using DvaStream.Core.Urls;
 using DvaStream.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,8 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton(platform);
         services.AddDvaStreamInfrastructure(platform.Directories.LogsDirectory);
+        services.AddSingleton<IUrlParser, UrlParser>();
+        services.AddSingleton<UrlInputViewModel>();
         services.AddSingleton<MainViewModel>();
         return services;
     }

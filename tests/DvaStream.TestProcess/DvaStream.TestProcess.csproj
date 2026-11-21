@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Petit exécutable piloté par les tests de CliWrapProcessRunner (M2-04). Ce n'est pas un projet de tests. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>DvaStream.TestProcess</RootNamespace>
+  </PropertyGroup>
+</Project>
