@@ -11,6 +11,38 @@
         Icon="/Assets/app-icon.ico"
         Background="{DynamicResource BgBrush}">
 
+  <Window.Styles>
+    <!-- Boutons principal et secondaire (maquette : 40 px, rayon 8) -->
+    <Style Selector="Button.primary, Button.secondary">
+      <Setter Property="Height" Value="{StaticResource ButtonHeight}" />
+      <Setter Property="Padding" Value="20,0" />
+      <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+    <Style Selector="Button.secondary">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.secondary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+  </Window.Styles>
+
   <!-- Racine focusable : un clic dans le vide lui donne le focus, ce qui le retire du champ de saisie. -->
   <DockPanel x:Name="RootPanel" Focusable="True" Background="Transparent">
 
@@ -48,6 +80,22 @@
       </Grid>
     </Border>
 
+    <!-- Barre d'état (maquette) : moteur à gauche, version à droite -->
+    <Border DockPanel.Dock="Bottom" Height="32"
+            Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="0,1,0,0">
+      <Grid ColumnDefinitions="*,Auto" Margin="20,0" DataContext="{Binding StatusBar}" x:DataType="vm:StatusBarViewModel">
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" IsVisible="{Binding EngineReady}" />
+          <Ellipse Width="8" Height="8" Fill="{DynamicResource DangerBrush}" IsVisible="{Binding EngineMissing}" />
+          <TextBlock Text="{Binding EngineText}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" />
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="{Binding VersionText}" FontSize="12" VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+      </Grid>
+    </Border>
+
     <!-- Colonne de contenu (maquette : 640 px) -->
     <Panel>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -66,9 +114,54 @@
                  TextWrapping="Wrap"
                  Margin="0,0,0,12"
                  Foreground="{DynamicResource TextMutedBrush}" />
-      <views:UrlInputView DataContext="{Binding UrlInput}" />
+      <Panel IsVisible="{Binding ShowInput}">
+        <views:UrlInputView DataContext="{Binding UrlInput}" />
+      </Panel>
       <views:PreviewView DataContext="{Binding Preview}" />
-      <views:FormatSelectorView DataContext="{Binding FormatSelector}" />
+      <!-- Choix du format, dossier et bouton Télécharger (M4-10, M4-11) -->
+      <StackPanel Spacing="{StaticResource Space4}" IsVisible="{Binding ShowForm}">
+        <views:FormatSelectorView DataContext="{Binding FormatSelector}" />
+        <views:DestinationView DataContext="{Binding Destination}" />
+        <TextBlock Text="{Binding DownloadMessage}"
+                   IsVisible="{Binding HasDownloadMessage}"
+                   FontSize="13"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource DangerBrush}" />
+        <Button Classes="primary"
+                HorizontalAlignment="Stretch"
+                Content="{loc:Loc Dl_Start}"
+                IsEnabled="{Binding CanDownload}"
+                Command="{Binding DownloadCommand}" />
+      </StackPanel>
+      <Panel IsVisible="{Binding ShowDownload}">
+        <views:DownloadView DataContext="{Binding Download}" />
+      </Panel>
+      <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" IsVisible="{Binding ShowReassurance}">
+        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                CornerRadius="{StaticResource RadiusLg}" Padding="12,6" Margin="4">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Path Data="M12,4 a4,4 0 1,0 0.01,0 M4,20 c0,-4 4,-6 8,-6 s8,2 8,6" Stroke="{DynamicResource SuccessBrush}" StrokeThickness="1.8"
+                  StrokeLineCap="Round" StrokeJoin="Round" Width="16" Height="16" Stretch="Uniform" />
+            <TextBlock Text="{loc:Loc Reassure_NoAccount}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+          </StackPanel>
+        </Border>
+        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                CornerRadius="{StaticResource RadiusLg}" Padding="12,6" Margin="4">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Path Data="M5,12 L10,17 L19,7" Stroke="{DynamicResource SuccessBrush}" StrokeThickness="1.8"
+                  StrokeLineCap="Round" StrokeJoin="Round" Width="16" Height="16" Stretch="Uniform" />
+            <TextBlock Text="{loc:Loc Reassure_NoAds}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+          </StackPanel>
+        </Border>
+        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                CornerRadius="{StaticResource RadiusLg}" Padding="12,6" Margin="4">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Path Data="M6,11 L18,11 L18,20 L6,20 Z M8,11 L8,8 a4,4 0 0,1 8,0 L16,11" Stroke="{DynamicResource SuccessBrush}" StrokeThickness="1.8"
+                  StrokeLineCap="Round" StrokeJoin="Round" Width="16" Height="16" Stretch="Uniform" />
+            <TextBlock Text="{loc:Loc Reassure_Local}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+          </StackPanel>
+        </Border>
+      </WrapPanel>
     </StackPanel>
     </ScrollViewer>
     <!-- Paramètres (maquette B) : retour, puis réglages enregistrés dès qu'ils changent -->

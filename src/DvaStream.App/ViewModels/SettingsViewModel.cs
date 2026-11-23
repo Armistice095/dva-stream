@@ -38,7 +38,7 @@ public sealed class SettingsViewModel : ObservableObject
         _picker = picker;
         _logger = logger ?? NullLogger<SettingsViewModel>.Instance;
 
-        QualityOptions = StandardHeights.Select(h => new ResolutionOption(h, $"{h}p")).ToList();
+        QualityOptions = StandardHeights.Select(h => new ResolutionOption(h, QualityLabels.For(h))).ToList();
         BrowseFolderCommand = new AsyncRelayCommand(BrowseFolderAsync);
         SelectThemeCommand = new RelayCommand<ThemeChoice>(SelectTheme);
 

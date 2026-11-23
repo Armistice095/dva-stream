@@ -2,7 +2,7 @@ using DvaStream.Core.Errors;
 
 namespace DvaStream.App.Localization;
 
-/// <summary>Messages d'erreur de prévisualisation (M2-12, FR-13) : un message et une action suggérée par cas.</summary>
+/// <summary>Messages d'erreur (prévisualisation M2-12, FR-13 ; téléchargement M4-11) : un message et une action suggérée par cas.</summary>
 public static class PreviewErrorMessages
 {
     /// <summary>Message pour <paramref name="kind"/>.</summary>
@@ -11,7 +11,7 @@ public static class PreviewErrorMessages
     /// <summary>Action suggérée pour <paramref name="kind"/>.</summary>
     public static string ActionFor(ErrorKind kind) => Strings.Get(ActionKeyFor(kind));
 
-    /// <summary>Clé du message ; les cas du téléchargement (M5-04) retombent provisoirement sur « inattendue ».</summary>
+    /// <summary>Clé du message ; les cas restants (M5-04) retombent provisoirement sur « inattendue ».</summary>
     public static string MessageKeyFor(ErrorKind kind) => $"Err_{Resolve(kind)}_Message";
 
     /// <summary>Clé de l'action suggérée.</summary>
@@ -29,6 +29,10 @@ public static class PreviewErrorMessages
         ErrorKind.EngineBroken => nameof(ErrorKind.EngineBroken),
         ErrorKind.UnsupportedPlaylist => nameof(ErrorKind.UnsupportedPlaylist),
         ErrorKind.InvalidUrl => nameof(ErrorKind.InvalidUrl),
+        ErrorKind.DiskFull => nameof(ErrorKind.DiskFull),
+        ErrorKind.FolderNotWritable => nameof(ErrorKind.FolderNotWritable),
+        ErrorKind.FfmpegMissing => nameof(ErrorKind.FfmpegMissing),
+        ErrorKind.FfmpegFailed => nameof(ErrorKind.FfmpegFailed),
         _ => nameof(ErrorKind.Unknown),
     };
 }

@@ -161,7 +161,8 @@ public class PreviewViewModelTests
         {
             ErrorKind.VideoPrivate, ErrorKind.VideoUnavailable, ErrorKind.VideoRestricted, ErrorKind.Network,
             ErrorKind.Timeout, ErrorKind.RateLimited, ErrorKind.EngineMissing, ErrorKind.EngineBroken,
-            ErrorKind.UnsupportedPlaylist, ErrorKind.InvalidUrl, ErrorKind.Unknown,
+            ErrorKind.UnsupportedPlaylist, ErrorKind.InvalidUrl, ErrorKind.Unknown, ErrorKind.DiskFull,
+            ErrorKind.FolderNotWritable, ErrorKind.FfmpegMissing, ErrorKind.FfmpegFailed,
         };
 
         var messages = kinds.Select(PreviewErrorMessages.MessageFor).ToList();

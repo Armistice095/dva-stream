@@ -1,8 +1,8 @@
 namespace DvaStream.App.ViewModels;
 
 /// <summary>
-/// État global de l'écran principal (TDD §9.2). Jalon M2 : <see cref="Idle"/>, <see cref="Analyzing"/>, <see cref="Ready"/> et <see cref="Error"/> ;
-/// <c>Downloading</c> et <c>Done</c> s'ajoutent aux jalons suivants.
+/// État global de l'écran principal (TDD §9.2). <see cref="Idle"/>, <see cref="Analyzing"/>, <see cref="Ready"/>, <see cref="Error"/>,
+/// puis (M4-11) <see cref="Downloading"/>, <see cref="Done"/> et <see cref="DownloadFailed"/>.
 /// </summary>
 public enum MainState
 {
@@ -17,4 +17,13 @@ public enum MainState
 
     /// <summary>L'analyse a échoué : un message est affiché.</summary>
     Error,
+
+    /// <summary>Téléchargement en cours : la carte de progression remplace le choix du format.</summary>
+    Downloading,
+
+    /// <summary>Téléchargement terminé : le fichier est enregistré.</summary>
+    Done,
+
+    /// <summary>Le téléchargement a échoué : un message et « Réessayer » sont affichés.</summary>
+    DownloadFailed,
 }

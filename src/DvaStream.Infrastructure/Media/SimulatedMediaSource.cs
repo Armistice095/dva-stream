@@ -15,6 +15,9 @@ public sealed class SimulatedMediaSource : IMediaSource
 
     public string Name => "Simulé";
 
+    public Task<string> DownloadAsync(DownloadPlan plan, IProgress<DownloadProgress> progress, CancellationToken ct) =>
+        throw new NotSupportedException("Le moteur simulé ne télécharge pas.");
+
     public async Task<MediaInfo> GetInfoAsync(VideoId id, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(id);

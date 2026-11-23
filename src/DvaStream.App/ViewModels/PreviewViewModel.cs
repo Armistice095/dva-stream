@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DvaStream.App.Localization;
 using DvaStream.Core.Errors;
 using DvaStream.Core.Media;
@@ -31,6 +32,22 @@ public sealed class PreviewViewModel : ObservableObject
     private byte[]? _thumbnailBytes;
     private string _errorMessage = string.Empty;
     private string _errorAction = string.Empty;
+    private bool _canRetry;
+
+    public PreviewViewModel(Action? retry = null)
+    {
+        RetryCommand = new RelayCommand(() => retry?.Invoke(), () => retry is not null);
+    }
+
+    /// <summary>Relance l'analyse après une erreur qui peut être passagère (réseau, délai, limite).</summary>
+    public IRelayCommand RetryCommand { get; }
+
+    /// <summary>Vrai si l'erreur affichée peut disparaître en réessayant.</summary>
+    public bool CanRetry
+    {
+        get => _canRetry;
+        private set => SetProperty(ref _canRetry, value);
+    }
 
     public PreviewState State
     {
@@ -130,6 +147,7 @@ public sealed class PreviewViewModel : ObservableObject
     public void ShowError(ErrorKind kind)
     {
         Reset();
+        CanRetry = kind is ErrorKind.Network or ErrorKind.Timeout or ErrorKind.RateLimited or ErrorKind.EngineBroken or ErrorKind.Unknown;
         ErrorMessage = PreviewErrorMessages.MessageFor(kind);
         ErrorAction = PreviewErrorMessages.ActionFor(kind);
         State = PreviewState.Error;
@@ -152,5 +170,6 @@ public sealed class PreviewViewModel : ObservableObject
         ThumbnailBytes = null;
         ErrorMessage = string.Empty;
         ErrorAction = string.Empty;
+        CanRetry = false;
     }
 }

@@ -1,5 +1,9 @@
+using DvaStream.Core.Downloads;
+using DvaStream.Core.Files;
 using DvaStream.Core.Media;
 using DvaStream.Core.Platform;
+using DvaStream.Infrastructure.Downloads;
+using DvaStream.Infrastructure.Files;
 using DvaStream.Infrastructure.Logging;
 using DvaStream.Infrastructure.Media;
 using DvaStream.Infrastructure.Processes;
@@ -25,6 +29,13 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddLogging(builder => builder.ClearProviders().AddSerilog(logger, dispose: true));
         services.AddSingleton<IProcessRunner, CliWrapProcessRunner>();
         services.AddSingleton<IMediaSource, YtDlpMediaSource>();
+        services.AddSingleton<IFileNamer, FileNamer>();
+        services.AddSingleton<IFileFinalizer, FileFinalizer>();
+        services.AddSingleton<IDownloadService>(sp => new DownloadService(
+            sp.GetRequiredService<IMediaSource>(),
+            sp.GetRequiredService<IFileFinalizer>(),
+            sp.GetRequiredService<IPlatformServices>().Directories.TempDirectory,
+            sp.GetService<ILogger<DownloadService>>()));
         services.AddSingleton<IThumbnailLoader>(sp => new HttpThumbnailLoader(
             new HttpClient { Timeout = TimeSpan.FromSeconds(10) },
             sp.GetService<ILogger<HttpThumbnailLoader>>()));

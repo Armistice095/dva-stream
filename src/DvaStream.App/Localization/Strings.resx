@@ -204,4 +204,157 @@
   <data name="Settings_ClipboardHelp" xml:space="preserve">
     <value>Propose un lien YouTube copié au retour dans l’application.</value>
   </data>
+  <data name="Size_MB" xml:space="preserve">
+    <value>{0} Mo</value>
+  </data>
+  <data name="Size_GB" xml:space="preserve">
+    <value>{0} Go</value>
+  </data>
+  <data name="Quality_4K" xml:space="preserve">
+    <value>Ultra HD (4K)</value>
+  </data>
+  <data name="Quality_2K" xml:space="preserve">
+    <value>2K</value>
+  </data>
+  <data name="Quality_FullHD" xml:space="preserve">
+    <value>Haute définition</value>
+  </data>
+  <data name="Quality_HD" xml:space="preserve">
+    <value>HD</value>
+  </data>
+  <data name="Quality_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Format_SizeNote" xml:space="preserve">
+    <value>Fichier d’environ {0}. Plus la qualité est haute, plus il est lourd.</value>
+  </data>
+  <data name="Status_Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Status_EngineReady" xml:space="preserve">
+    <value>Moteur prêt</value>
+  </data>
+  <data name="Status_EngineMissing" xml:space="preserve">
+    <value>Moteur introuvable</value>
+  </data>
+  <data name="Preview_Retry" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="Reassure_NoAccount" xml:space="preserve">
+    <value>Aucun compte</value>
+  </data>
+  <data name="Reassure_NoAds" xml:space="preserve">
+    <value>Aucune publicité</value>
+  </data>
+  <data name="Reassure_Local" xml:space="preserve">
+    <value>100 % local</value>
+  </data>
+  <data name="Status_FfmpegMissing" xml:space="preserve">
+    <value>FFmpeg introuvable</value>
+  </data>
+  <data name="Err_DiskFull_Message" xml:space="preserve">
+    <value>Il n'y a plus assez de place sur le disque.</value>
+  </data>
+  <data name="Err_DiskFull_Action" xml:space="preserve">
+    <value>Libérez de l'espace ou choisissez un autre dossier, puis réessayez.</value>
+  </data>
+  <data name="Err_FolderNotWritable_Message" xml:space="preserve">
+    <value>Impossible d'écrire dans ce dossier.</value>
+  </data>
+  <data name="Err_FolderNotWritable_Action" xml:space="preserve">
+    <value>Choisissez un autre dossier de destination.</value>
+  </data>
+  <data name="Err_FfmpegMissing_Message" xml:space="preserve">
+    <value>Le composant FFmpeg est introuvable.</value>
+  </data>
+  <data name="Err_FfmpegMissing_Action" xml:space="preserve">
+    <value>Réinstallez l'application pour le restaurer.</value>
+  </data>
+  <data name="Err_FfmpegFailed_Message" xml:space="preserve">
+    <value>La préparation du fichier a échoué.</value>
+  </data>
+  <data name="Err_FfmpegFailed_Action" xml:space="preserve">
+    <value>Réessayez. Les détails sont dans le fichier journal.</value>
+  </data>
+  <data name="Dest_Label" xml:space="preserve">
+    <value>Enregistrer dans</value>
+  </data>
+  <data name="Dest_Change" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="Dl_Start" xml:space="preserve">
+    <value>Télécharger</value>
+  </data>
+  <data name="Dl_FolderInvalid" xml:space="preserve">
+    <value>Choisissez un dossier de destination valide.</value>
+  </data>
+  <data name="Dl_RequestInvalid" xml:space="preserve">
+    <value>Ce téléchargement n'est pas possible avec ce choix.</value>
+  </data>
+  <data name="Dl_Phase_Queued" xml:space="preserve">
+    <value>En attente…</value>
+  </data>
+  <data name="Dl_Phase_Preparing" xml:space="preserve">
+    <value>Préparation…</value>
+  </data>
+  <data name="Dl_Phase_DownloadingVideo" xml:space="preserve">
+    <value>Téléchargement de la vidéo…</value>
+  </data>
+  <data name="Dl_Phase_DownloadingAudio" xml:space="preserve">
+    <value>Téléchargement du son…</value>
+  </data>
+  <data name="Dl_Phase_Merging" xml:space="preserve">
+    <value>Assemblage de l'image et du son…</value>
+  </data>
+  <data name="Dl_Phase_Converting" xml:space="preserve">
+    <value>Conversion du son…</value>
+  </data>
+  <data name="Dl_Phase_Finalizing" xml:space="preserve">
+    <value>Enregistrement du fichier…</value>
+  </data>
+  <data name="Dl_Phase_Completed" xml:space="preserve">
+    <value>Téléchargement terminé</value>
+  </data>
+  <data name="Dl_Phase_Failed" xml:space="preserve">
+    <value>Le téléchargement a échoué</value>
+  </data>
+  <data name="Dl_Phase_Cancelled" xml:space="preserve">
+    <value>Téléchargement annulé</value>
+  </data>
+  <data name="Dl_Percent" xml:space="preserve">
+    <value>{0} %</value>
+  </data>
+  <data name="Dl_Stats_Size" xml:space="preserve">
+    <value>{0} sur {1}</value>
+  </data>
+  <data name="Dl_Stats_Remaining" xml:space="preserve">
+    <value>Reste {0}</value>
+  </data>
+  <data name="Dl_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Dl_Retry" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="Dl_Another" xml:space="preserve">
+    <value>Télécharger une autre vidéo</value>
+  </data>
+  <data name="Dl_SavedTo" xml:space="preserve">
+    <value>Enregistré dans {0}</value>
+  </data>
+  <data name="Speed_MBps" xml:space="preserve">
+    <value>{0} Mo/s</value>
+  </data>
+  <data name="Speed_KBps" xml:space="preserve">
+    <value>{0} Ko/s</value>
+  </data>
+  <data name="Dl_OpenFile" xml:space="preserve">
+    <value>Ouvrir le fichier</value>
+  </data>
+  <data name="Dl_Reveal" xml:space="preserve">
+    <value>Afficher dans le dossier</value>
+  </data>
+  <data name="Notify_DoneTitle" xml:space="preserve">
+    <value>Téléchargement terminé</value>
+  </data>
 </root>

@@ -4,6 +4,7 @@ using DvaStream.Core.Platform;
 using DvaStream.Core.Settings;
 using DvaStream.Core.Urls;
 using DvaStream.Infrastructure.DependencyInjection;
+using DvaStream.Infrastructure.Media;
 using DvaStream.Infrastructure.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,7 +25,14 @@ public static class ServiceCollectionExtensions
             Path.Combine(platform.Directories.ConfigDirectory, "settings.json"),
             AppSettings.CreateDefaults(DefaultDownloadFolder()),
             sp.GetService<ILogger<JsonSettingsStore>>()));
+        services.AddSingleton(new StatusBarViewModel(
+            StatusBarViewModel.CurrentVersion(),
+            () => File.Exists(platform.EngineExecutablePath),
+            () => File.Exists(FfmpegLocator.GetExecutablePath(
+                platform.Directories, OperatingSystem.IsWindows() ? HostOs.Windows : HostOs.Linux))));
+        services.AddSingleton<FfmpegProbe>();
         services.AddSingleton<IFolderPicker, AvaloniaFolderPicker>();
+        services.AddSingleton<IDesktopShell>(sp => new DesktopShell(null, sp.GetService<ILogger<DesktopShell>>()));
         services.AddSingleton<ThemeService>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<IUrlParser, UrlParser>();

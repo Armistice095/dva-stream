@@ -48,9 +48,28 @@ public sealed class CliWrapProcessRunner : IProcessRunner
         var name = Path.GetFileName(spec.Executable);
         try
         {
-            var result = await command.ExecuteBufferedAsync(Encoding.UTF8, linked.Token).ConfigureAwait(false);
-            _logger.LogDebug("Processus {Executable} terminé avec le code {ExitCode}.", name, result.ExitCode);
-            return new ProcessResult(result.ExitCode, result.StandardOutput, result.StandardError);
+            ProcessResult processResult;
+            if (spec.OnOutputLine is { } onLine)
+            {
+                // Lecture ligne à ligne de la sortie standard (progression) ; la sortie complète est aussi gardée.
+                var standardOutput = new StringBuilder();
+                var standardError = new StringBuilder();
+                var streaming = command
+                    .WithStandardOutputPipe(PipeTarget.Merge(
+                        PipeTarget.ToStringBuilder(standardOutput, Encoding.UTF8),
+                        PipeTarget.ToDelegate(line => SafeInvoke(onLine, line), Encoding.UTF8)))
+                    .WithStandardErrorPipe(PipeTarget.ToStringBuilder(standardError, Encoding.UTF8));
+                var streamed = await streaming.ExecuteAsync(linked.Token).ConfigureAwait(false);
+                processResult = new ProcessResult(streamed.ExitCode, standardOutput.ToString(), standardError.ToString());
+            }
+            else
+            {
+                var result = await command.ExecuteBufferedAsync(Encoding.UTF8, linked.Token).ConfigureAwait(false);
+                processResult = new ProcessResult(result.ExitCode, result.StandardOutput, result.StandardError);
+            }
+
+            _logger.LogDebug("Processus {Executable} terminé avec le code {ExitCode}.", name, processResult.ExitCode);
+            return processResult;
         }
         catch (OperationCanceledException) when (timeoutSource.IsCancellationRequested && !ct.IsCancellationRequested)
         {
@@ -61,6 +80,19 @@ public sealed class CliWrapProcessRunner : IProcessRunner
         {
             _logger.LogError(ex, "Processus {Executable} impossible à démarrer.", name);
             throw new ProcessLaunchException($"Impossible de démarrer « {name} » : {ex.Message}", ex);
+        }
+    }
+
+    private void SafeInvoke(Action<string> handler, string line)
+    {
+        try
+        {
+            handler(line);
+        }
+        catch (Exception ex)
+        {
+            // Un rappel défaillant ne doit pas interrompre le processus ni la lecture de sa sortie.
+            _logger.LogWarning(ex, "Le rappel de lecture de la sortie a échoué.");
         }
     }
 }

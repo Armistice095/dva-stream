@@ -5,12 +5,15 @@ namespace DvaStream.Infrastructure.Processes;
 /// <param name="Arguments">Arguments, un par élément ; aucun interprète de commandes n'est utilisé.</param>
 /// <param name="Timeout">Durée maximale ; <c>null</c> = pas de limite.</param>
 /// <param name="WorkingDirectory">Dossier de travail ; <c>null</c> = celui de l'application.</param>
+/// <param name="Environment">Variables d'environnement à ajouter.</param>
+/// <param name="OnOutputLine">Appelée pour chaque ligne de la sortie standard, au fur et à mesure, depuis un autre thread ; la sortie reste aussi renvoyée en entier. Une exception levée par ce rappel est ignorée.</param>
 public sealed record ProcessSpec(
     string Executable,
     IReadOnlyList<string> Arguments,
     TimeSpan? Timeout = null,
     string? WorkingDirectory = null,
-    IReadOnlyDictionary<string, string?>? Environment = null);
+    IReadOnlyDictionary<string, string?>? Environment = null,
+    Action<string>? OnOutputLine = null);
 
 /// <summary>Résultat d'un processus terminé. Un code de sortie non nul n'est pas une exception : c'est à l'appelant d'en juger.</summary>
 /// <param name="ExitCode">Code de sortie.</param>

@@ -1,5 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DvaStream.App.Localization;
+using DvaStream.App.Platform;
+using DvaStream.Core.Downloads;
 using DvaStream.Core.Errors;
 using DvaStream.Core.Media;
 using DvaStream.Core.Settings;
@@ -18,6 +21,12 @@ public sealed class MainViewModel : ObservableObject
     private readonly IThumbnailLoader _thumbnails;
     private readonly ISettingsStore _settings;
     private readonly ILogger<MainViewModel> _logger;
+    private readonly IDownloadService? _downloads;
+    private readonly IDesktopShell? _shell;
+    private MediaInfo? _info;
+    private DownloadViewModel? _download;
+    private string? _downloadMessage;
+    private Task _downloadTask = Task.CompletedTask;
     private MainState _state = MainState.Idle;
     private AppPage _page = AppPage.Home;
     private CancellationTokenSource? _analysisCts;
@@ -25,6 +34,7 @@ public sealed class MainViewModel : ObservableObject
     private Task _analysis = Task.CompletedTask;
     private Task _thumbnail = Task.CompletedTask;
     private Task _preferenceSave = Task.CompletedTask;
+    private VideoId? _lastId;
     private readonly SynchronizationContext? _ui = SynchronizationContext.Current;
 
     public MainViewModel(
@@ -33,7 +43,11 @@ public sealed class MainViewModel : ObservableObject
         IThumbnailLoader thumbnails,
         ISettingsStore settings,
         SettingsViewModel settingsPage,
-        ILogger<MainViewModel> logger)
+        ILogger<MainViewModel> logger,
+        StatusBarViewModel? statusBar = null,
+        IDownloadService? downloads = null,
+        IFolderPicker? folderPicker = null,
+        IDesktopShell? shell = null)
     {
         ArgumentNullException.ThrowIfNull(urlInput);
         ArgumentNullException.ThrowIfNull(source);
@@ -47,6 +61,19 @@ public sealed class MainViewModel : ObservableObject
         _thumbnails = thumbnails;
         _settings = settings;
         Settings = settingsPage;
+        _downloads = downloads;
+        _shell = shell;
+        Destination = new DestinationViewModel(settings, folderPicker, logger);
+        DownloadCommand = new RelayCommand(StartDownload, () => CanDownload);
+        StatusBar = statusBar ?? new StatusBarViewModel(string.Empty, () => true);
+        Preview = new PreviewViewModel(RetryLast);
+        Preview.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(PreviewViewModel.IsShown))
+            {
+                OnPropertyChanged(nameof(ShowReassurance));
+            }
+        };
         ToggleSettingsCommand = new RelayCommand(() => Page = Page == AppPage.Settings ? AppPage.Home : AppPage.Settings);
         CloseSettingsCommand = new RelayCommand(() => Page = AppPage.Home);
         _logger = logger;
@@ -61,6 +88,55 @@ public sealed class MainViewModel : ObservableObject
     }
 
     public string Title => "DVA Stream";
+
+    /// <summary>Dossier de destination (M4-10).</summary>
+    public DestinationViewModel Destination { get; }
+
+    /// <summary>Lance le téléchargement avec les choix faits (M4-11).</summary>
+    public IRelayCommand DownloadCommand { get; }
+
+    /// <summary>Vrai quand une vidéo est analysée et qu'un téléchargement peut démarrer.</summary>
+    public bool CanDownload => State == MainState.Ready && _downloads is not null && _info is not null;
+
+    /// <summary>Carte de progression du téléchargement en cours ou terminé, sinon <c>null</c>.</summary>
+    public DownloadViewModel? Download
+    {
+        get => _download;
+        private set
+        {
+            if (SetProperty(ref _download, value))
+            {
+                OnPropertyChanged(nameof(ShowDownload));
+            }
+        }
+    }
+
+    /// <summary>Message quand la demande est refusée avant de démarrer (dossier invalide...).</summary>
+    public string? DownloadMessage
+    {
+        get => _downloadMessage;
+        private set
+        {
+            if (SetProperty(ref _downloadMessage, value))
+            {
+                OnPropertyChanged(nameof(HasDownloadMessage));
+            }
+        }
+    }
+
+    public bool HasDownloadMessage => !string.IsNullOrEmpty(_downloadMessage);
+
+    /// <summary>Choix du format, dossier et bouton Télécharger : visibles une fois la vidéo analysée.</summary>
+    public bool ShowForm => State == MainState.Ready;
+
+    /// <summary>Champ de saisie : masqué pendant et après un téléchargement.</summary>
+    public bool ShowInput => State is not (MainState.Downloading or MainState.Done or MainState.DownloadFailed);
+
+    /// <summary>Carte de progression.</summary>
+    public bool ShowDownload => Download is not null;
+
+    /// <summary>Tâche du dernier téléchargement lancé par l'interface (terminée si aucun) ; utile aux tests.</summary>
+    public Task DownloadCompletion => _downloadTask;
 
     public UrlInputViewModel UrlInput { get; }
 
@@ -92,7 +168,13 @@ public sealed class MainViewModel : ObservableObject
     public bool IsSettingsPage => Page == AppPage.Settings;
 
     /// <summary>Carte de prévisualisation (masquée tant qu'il n'y a rien à montrer).</summary>
-    public PreviewViewModel Preview { get; } = new();
+    public PreviewViewModel Preview { get; }
+
+    /// <summary>Barre d'état : moteur et version.</summary>
+    public StatusBarViewModel StatusBar { get; }
+
+    /// <summary>Vrai tant que rien n'est affiché sous le champ : les trois garanties de l'application sont alors montrées.</summary>
+    public bool ShowReassurance => !Preview.IsShown;
 
     /// <summary>Choix du mode, de la qualité et du format audio (affiché une fois la vidéo analysée).</summary>
     public FormatSelectorViewModel FormatSelector { get; } = new();
@@ -105,6 +187,10 @@ public sealed class MainViewModel : ObservableObject
             if (SetProperty(ref _state, value))
             {
                 OnPropertyChanged(nameof(IsAnalyzing));
+                OnPropertyChanged(nameof(ShowForm));
+                OnPropertyChanged(nameof(ShowInput));
+                OnPropertyChanged(nameof(CanDownload));
+                DownloadCommand.NotifyCanExecuteChanged();
             }
         }
     }
@@ -129,11 +215,14 @@ public sealed class MainViewModel : ObservableObject
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        if (State == MainState.Analyzing)
+        if (State is MainState.Analyzing or MainState.Downloading)
         {
             return;
         }
 
+        _lastId = id;
+        _info = null;
+        DownloadMessage = null;
         CancelThumbnail();
         using var cts = new CancellationTokenSource();
         _analysisCts = cts;
@@ -147,6 +236,7 @@ public sealed class MainViewModel : ObservableObject
             _logger.LogInformation("Analyse de la vidéo {VideoId} avec le moteur {Engine}.", id, _source.Name);
             var info = await _source.GetInfoAsync(id, cts.Token);
             _logger.LogInformation("Analyse terminée : « {Title} ».", info.Title);
+            _info = info;
             Preview.ShowInfo(info);
             FormatSelector.Configure(info, _settings.Current.PreferredHeight, _settings.Current.PreferredAudio);
             State = MainState.Ready;
@@ -174,7 +264,143 @@ public sealed class MainViewModel : ObservableObject
         {
             _analysisCts = null;
             UrlInput.IsBusy = false;
+            StatusBar.Refresh();
         }
+    }
+
+    private void RetryLast()
+    {
+        if (_lastId is { } id && State is not (MainState.Analyzing or MainState.Downloading))
+        {
+            _analysis = AnalyzeAsync(id);
+        }
+    }
+
+    private void StartDownload()
+    {
+        if (!CanDownload || _info is not { } info)
+        {
+            return;
+        }
+
+        var result = DownloadRequest.Create(
+            info, FormatSelector.Mode, FormatSelector.SelectedHeight, FormatSelector.AudioFormat, Destination.Folder);
+        if (result.Request is not { } request)
+        {
+            DownloadMessage = DownloadRequestMessages.MessageFor(result.Error ?? DownloadRequestError.FolderInvalid);
+            return;
+        }
+
+        DownloadMessage = null;
+        _downloadTask = RunDownloadAsync(request, info);
+    }
+
+    private async Task RunDownloadAsync(DownloadRequest request, MediaInfo info)
+    {
+        if (_downloads is not { } service)
+        {
+            return;
+        }
+
+        var job = service.Enqueue(request, info);
+        Download = new DownloadViewModel(
+            job,
+            () => service.Cancel(job),
+            RetryDownload,
+            BackToStart,
+            _shell is null ? null : () => OpenFinalFile(job),
+            _shell is null ? null : () => RevealFinalFile(job));
+        State = MainState.Downloading;
+        _logger.LogInformation("Téléchargement {JobId} démarré ({Mode}).", job.Id, request.Mode);
+
+        try
+        {
+            await service.RunAsync(job, CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Échec inattendu du téléchargement {JobId}.", job.Id);
+            job.Fail(new AppError(ErrorKind.Unknown, ex.Message, ex));
+        }
+
+        switch (job.Phase)
+        {
+            case DownloadPhase.Completed:
+                _logger.LogInformation("Téléchargement {JobId} terminé.", job.Id);
+                State = MainState.Done;
+                NotifyDone(job);
+                break;
+            case DownloadPhase.Cancelled:
+                // Annulé : retour au choix du format, la vidéo reste analysée.
+                _logger.LogInformation("Téléchargement {JobId} annulé.", job.Id);
+                Download = null;
+                State = MainState.Ready;
+                break;
+            default:
+                _logger.LogWarning("Téléchargement {JobId} en échec ({Kind}).", job.Id, job.Error?.Kind);
+                State = MainState.DownloadFailed;
+                break;
+        }
+    }
+
+    private void OpenFinalFile(DownloadJob job)
+    {
+        if (job.FinalPath is { } path)
+        {
+            _shell?.OpenFile(path);
+        }
+    }
+
+    private void RevealFinalFile(DownloadJob job)
+    {
+        if (job.FinalPath is { } path)
+        {
+            _shell?.RevealInFolder(path);
+        }
+    }
+
+    // Notification système (FR-37) ; elle n'apparaît que si la fenêtre n'est pas au premier plan.
+    private void NotifyDone(DownloadJob job)
+    {
+        if (_shell is null || job.FinalPath is not { } path)
+        {
+            return;
+        }
+
+        try
+        {
+            _shell.Notify(Strings.Get("Notify_DoneTitle"), Path.GetFileName(path));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Notification impossible.");
+        }
+    }
+
+    private void RetryDownload()
+    {
+        if (State == MainState.DownloadFailed && _info is { } info && Download is { } current)
+        {
+            _downloadTask = RunDownloadAsync(current.Job.Request, info);
+        }
+    }
+
+    // « Télécharger une autre vidéo » : retour à l'accueil, champ vide.
+    private void BackToStart()
+    {
+        if (State is not (MainState.Done or MainState.DownloadFailed))
+        {
+            return;
+        }
+
+        CancelThumbnail();
+        Download = null;
+        _info = null;
+        _lastId = null;
+        Preview.Clear();
+        FormatSelector.Clear();
+        UrlInput.ClearCommand.Execute(null);
+        State = MainState.Idle;
     }
 
     private void StartThumbnail(MediaInfo info)

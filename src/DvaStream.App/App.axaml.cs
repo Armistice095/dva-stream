@@ -7,6 +7,8 @@ using DvaStream.App.Localization;
 using DvaStream.App.Platform;
 using DvaStream.App.ViewModels;
 using DvaStream.App.Views;
+using DvaStream.Core.Platform;
+using DvaStream.Infrastructure.Media;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -30,6 +32,11 @@ public partial class App : Application
 
         var logger = _services.GetRequiredService<ILogger<App>>();
         logger.LogInformation("DVA Stream démarré (version {Version}).", typeof(App).Assembly.GetName().Version);
+
+        // Vérifie FFmpeg au démarrage sans bloquer l'ouverture de la fenêtre : le résultat est journalisé.
+        var platform = _services.GetRequiredService<IPlatformServices>();
+        _ = _services.GetRequiredService<FfmpegProbe>().ProbeAsync(
+            FfmpegLocator.GetExecutablePath(platform.Directories, OperatingSystem.IsWindows() ? HostOs.Windows : HostOs.Linux));
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

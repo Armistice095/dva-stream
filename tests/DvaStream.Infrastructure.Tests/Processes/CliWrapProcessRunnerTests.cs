@@ -152,4 +152,60 @@ public class CliWrapProcessRunnerTests
         await Assert.ThrowsAsync<ArgumentNullException>(() => _runner.RunAsync(null!, CancellationToken.None));
         await Assert.ThrowsAsync<ArgumentException>(() => _runner.RunAsync(new ProcessSpec(" ", []), CancellationToken.None));
     }
+
+    [Fact]
+    public async Task Les_lignes_de_la_sortie_standard_sont_transmises_une_a_une_et_la_sortie_complete_est_gardee()
+    {
+        var file = Path.Combine(Path.GetTempPath(), $"dva-lines-{Guid.NewGuid():N}.txt");
+        await File.WriteAllTextAsync(file, "un\ndeux é\ntrois\n");
+        var lines = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        try
+        {
+            var spec = TestProcessHost.Spec("replay", file, "-", "0") with { OnOutputLine = lines.Enqueue };
+
+            var result = await _runner.RunAsync(spec, CancellationToken.None);
+
+            Assert.Equal(0, result.ExitCode);
+            Assert.Equal(new[] { "un", "deux é", "trois" }, lines.ToArray());
+            Assert.Equal("un\ndeux é\ntrois\n", result.StandardOutput.Replace("\r\n", "\n", StringComparison.Ordinal));
+        }
+        finally
+        {
+            File.Delete(file);
+        }
+    }
+
+    [Fact]
+    public async Task Un_rappel_qui_leve_une_exception_n_interrompt_pas_le_processus()
+    {
+        var spec = TestProcessHost.Spec("echo", "bonjour") with { OnOutputLine = _ => throw new InvalidOperationException("boom") };
+
+        var result = await _runner.RunAsync(spec, CancellationToken.None);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal("bonjour", result.StandardOutput);
+    }
+
+    [Fact]
+    public async Task Avec_lecture_des_lignes_le_code_de_sortie_et_stderr_restent_disponibles()
+    {
+        var out1 = Path.Combine(Path.GetTempPath(), $"dva-o-{Guid.NewGuid():N}.txt");
+        var err1 = Path.Combine(Path.GetTempPath(), $"dva-e-{Guid.NewGuid():N}.txt");
+        await File.WriteAllTextAsync(out1, "a\n");
+        await File.WriteAllTextAsync(err1, "ERROR: raté");
+        try
+        {
+            var spec = TestProcessHost.Spec("replay", out1, err1, "3") with { OnOutputLine = _ => { } };
+
+            var result = await _runner.RunAsync(spec, CancellationToken.None);
+
+            Assert.Equal(3, result.ExitCode);
+            Assert.Equal("ERROR: raté", result.StandardError);
+        }
+        finally
+        {
+            File.Delete(out1);
+            File.Delete(err1);
+        }
+    }
 }

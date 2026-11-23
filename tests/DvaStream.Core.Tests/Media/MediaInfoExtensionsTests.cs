@@ -50,3 +50,39 @@ public class MediaInfoExtensionsTests
         Assert.False(Info(Stream(StreamKind.Video, 360)).HasAudio());
     }
 }
+
+/// <summary>M3-08 : taille estimée.</summary>
+public class EstimateSizeTests
+{
+    private static MediaInfo Info(params MediaStream[] streams)
+    {
+        Assert.True(VideoId.TryCreate("dQw4w9WgXcQ", out var id));
+        return new MediaInfo(id!, "t", "c", TimeSpan.FromSeconds(1), null, streams);
+    }
+
+    [Fact]
+    public void Video_prefere_h264_et_ajoute_laudio_aac()
+    {
+        var info = Info(
+            new MediaStream("a", StreamKind.Video, 1080, "webm", "vp9", null, 90, null),
+            new MediaStream("b", StreamKind.Video, 1080, "mp4", "avc1.64", null, 100, null),
+            new MediaStream("c", StreamKind.Audio, null, "webm", null, "opus", 50, null),
+            new MediaStream("d", StreamKind.Audio, null, "m4a", null, "mp4a.40", 10, null));
+
+        Assert.Equal(110, info.EstimateSizeBytes(DownloadMode.Video, 1080));
+        Assert.Equal(10, info.EstimateSizeBytes(DownloadMode.Audio, null));
+    }
+
+    [Fact]
+    public void Flux_avec_son_et_taille_inconnue()
+    {
+        var info = Info(
+            new MediaStream("m", StreamKind.Muxed, 360, "mp4", "avc1", "mp4a", 40, null),
+            new MediaStream("v", StreamKind.Video, 720, "mp4", "avc1", null, null, null));
+
+        Assert.Equal(40, info.EstimateSizeBytes(DownloadMode.Video, 360));
+        Assert.Null(info.EstimateSizeBytes(DownloadMode.Video, 720));
+        Assert.Null(info.EstimateSizeBytes(DownloadMode.Video, null));
+        Assert.Null(info.EstimateSizeBytes(DownloadMode.Audio, null));
+    }
+}

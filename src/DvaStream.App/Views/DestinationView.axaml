@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DvaStream.App.ViewModels"
+             xmlns:loc="using:DvaStream.App.Localization"
+             x:Class="DvaStream.App.Views.DestinationView"
+             x:DataType="vm:DestinationViewModel">
+
+  <!-- Dossier de destination (M4-10) : libellé, chemin, bouton « Modifier » -->
+  <Border Background="{DynamicResource SurfaceBrush}"
+          BorderBrush="{DynamicResource BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="{StaticResource RadiusLg}"
+          Padding="16,12">
+    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space4}">
+      <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+        <TextBlock Text="{loc:Loc Dest_Label}"
+                   FontSize="13"
+                   Foreground="{DynamicResource TextMutedBrush}" />
+        <TextBlock Text="{Binding Folder}"
+                   FontSize="14" FontWeight="SemiBold"
+                   TextTrimming="CharacterEllipsis"
+                   Foreground="{DynamicResource TextPrimaryBrush}"
+                   ToolTip.Tip="{Binding Folder}" />
+      </StackPanel>
+      <Button Grid.Column="1"
+              Classes="secondary"
+              Content="{loc:Loc Dest_Change}"
+              Command="{Binding ChangeCommand}"
+              AutomationProperties.Name="{loc:Loc Dest_Change}" />
+    </Grid>
+  </Border>
+</UserControl>

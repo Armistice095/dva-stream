@@ -384,6 +384,8 @@ Objectif : **70 % de couverture** sur `Core` (PRD §7.6). Les tests réseau rée
 | S4 | Avalonia : détection du presse-papiers, notification système, « Afficher dans le dossier » sur les 3 OS | Comportement acceptable sans dépendance native fragile |
 | S5 | Mise à jour atomique du binaire yt-dlp (Windows : fichier verrouillé) | Mise à jour réussie pendant que l'app tourne, retour arrière testé |
 
+**Résultats (2026-11-22)** : S1 et S2 réalisés (M4-01), décisions et gabarit de progression dans `JOURNAL.md` D-038. S1 : MP4 H.264 + AAC jusqu'à 1080p, VP9/AV1 recopiés au-delà, jamais de ré-encodage vidéo ; 2160p à contrôler en M4-05. S2 : gabarit fiable, progression par flux à agréger. Les autres spikes restent à faire.
+
 ## 17. Plan de développement (jalons)
 
 | Jalon | Contenu | FR couverts | Résultat visible |

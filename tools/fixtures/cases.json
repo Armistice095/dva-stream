@@ -14,19 +14,19 @@
   {
     "name": "long",
     "expect": "success",
-    "url": "https://www.youtube.com/watch?v=ylswUDZVgWM",
+    "url": "",
     "note": "À RENSEIGNER : une vidéo publique de plus d'1 heure (conférence, cours...)."
   },
   {
     "name": "private",
     "expect": "error",
-    "url": "https://youtu.be/EDFVl4EdwNQ",
+    "url": "",
     "note": "À RENSEIGNER : le lien d'une vidéo privée (par ex. une de vos propres vidéos passée en « Privée »)."
   },
   {
     "name": "deleted",
     "expect": "error",
-    "url": "https://youtu.be/Wnht0JMLYP4",
+    "url": "",
     "note": "À RENSEIGNER : le lien d'une vidéo supprimée (une vidéo que vous avez vous-même supprimée, par exemple)."
   },
   {

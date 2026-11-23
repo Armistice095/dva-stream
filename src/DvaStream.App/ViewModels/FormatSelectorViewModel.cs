@@ -28,6 +28,8 @@ public sealed class FormatSelectorViewModel : ObservableObject
     private bool _canChooseVideo;
     private bool _canChooseAudio;
     private string? _fallbackNote;
+    private MediaInfo? _info;
+    private string? _sizeNote;
 
     public FormatSelectorViewModel()
     {
@@ -90,6 +92,7 @@ public sealed class FormatSelectorViewModel : ObservableObject
             {
                 // Un choix manuel remplace la mention de repli.
                 FallbackNote = null;
+                UpdateSizeNote();
                 if (value is not null)
                 {
                     ResolutionChosen?.Invoke(this, value.Height);
@@ -122,13 +125,28 @@ public sealed class FormatSelectorViewModel : ObservableObject
 
     public bool HasFallbackNote => !string.IsNullOrEmpty(_fallbackNote);
 
+    /// <summary>« Fichier d'environ 232 Mo. Plus la qualité est haute, plus il est lourd. » ; <c>null</c> si la taille est inconnue.</summary>
+    public string? SizeNote
+    {
+        get => _sizeNote;
+        private set
+        {
+            if (SetProperty(ref _sizeNote, value))
+            {
+                OnPropertyChanged(nameof(HasSizeNote));
+            }
+        }
+    }
+
+    public bool HasSizeNote => !string.IsNullOrEmpty(_sizeNote);
+
     /// <summary>Prépare le sélecteur pour <paramref name="info"/> avec les préférences enregistrées.</summary>
     public void Configure(MediaInfo info, int preferredHeight, AudioFormat preferredAudio)
     {
         ArgumentNullException.ThrowIfNull(info);
 
         var heights = info.GetAvailableResolutions();
-        Resolutions = heights.Select(h => new ResolutionOption(h, $"{h}p")).ToList();
+        Resolutions = heights.Select(h => new ResolutionOption(h, QualityLabels.For(h))).ToList();
 
         var chosen = ResolutionResolver.Resolve(preferredHeight, heights);
         _selectedResolution = chosen is { } h2 ? _resolutions.First(r => r.Height == h2) : null;
@@ -141,6 +159,8 @@ public sealed class FormatSelectorViewModel : ObservableObject
         _audioFormat = preferredAudio == AudioFormat.Mp3 && !Mp3Available ? AudioFormat.M4a : preferredAudio;
         _mode = _canChooseVideo ? DownloadMode.Video : DownloadMode.Audio;
 
+        _info = info;
+        UpdateSizeNote();
         IsConfigured = true;
         OnPropertyChanged(string.Empty);
         SelectVideoCommand.NotifyCanExecuteChanged();
@@ -155,6 +175,8 @@ public sealed class FormatSelectorViewModel : ObservableObject
         _canChooseVideo = false;
         _canChooseAudio = false;
         _fallbackNote = null;
+        _info = null;
+        _sizeNote = null;
         _mode = DownloadMode.Video;
         IsConfigured = false;
         OnPropertyChanged(string.Empty);
@@ -176,7 +198,16 @@ public sealed class FormatSelectorViewModel : ObservableObject
         OnPropertyChanged(nameof(IsVideoMode));
         OnPropertyChanged(nameof(IsAudioMode));
         OnPropertyChanged(nameof(SelectedHeight));
+        UpdateSizeNote();
         RaiseVisibility();
+    }
+
+    private void UpdateSizeNote()
+    {
+        var bytes = _info?.EstimateSizeBytes(_mode, _selectedResolution?.Height);
+        SizeNote = bytes is > 0
+            ? string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Get("Format_SizeNote"), SizeFormatter.Format(bytes.Value))
+            : null;
     }
 
     private void RaiseVisibility()

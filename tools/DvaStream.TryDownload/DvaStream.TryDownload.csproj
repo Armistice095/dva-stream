@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Outil de test manuel de M4-05 : hors de la solution, donc hors de la CI. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DvaStream.TryDownload</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DvaStream.Core\DvaStream.Core.csproj" />
+    <ProjectReference Include="..\..\src\DvaStream.Infrastructure\DvaStream.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

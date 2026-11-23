@@ -1,3 +1,4 @@
+using DvaStream.App.Localization;
 using DvaStream.App.ViewModels;
 using DvaStream.Core.Media;
 using DvaStream.Core.Settings;
@@ -38,7 +39,8 @@ public class FormatSelectorViewModelTests
 
         vm.Configure(Info(Video(360), Video(1080), Video(720), Audio()), 1080, AudioFormat.M4a);
 
-        Assert.Equal(new[] { "1080p", "720p", "360p" }, vm.Resolutions.Select(r => r.Label).ToArray());
+        Assert.Equal(new[] { 1080, 720, 360 }.Select(QualityLabels.For), vm.Resolutions.Select(r => r.Label));
+        Assert.StartsWith("360p", vm.Resolutions[2].Label, StringComparison.Ordinal);
         Assert.Equal(1080, vm.SelectedResolution!.Height);
         Assert.Equal(1080, vm.SelectedHeight);
         Assert.True(vm.IsVideoMode);
@@ -193,5 +195,36 @@ public class FormatSelectorViewModelTests
     public void Une_information_nulle_est_refusee()
     {
         Assert.Throws<ArgumentNullException>(() => new FormatSelectorViewModel().Configure(null!, 1080, AudioFormat.M4a));
+    }
+
+    [Fact]
+    public void La_note_de_taille_suit_la_resolution_et_le_mode()
+    {
+        var vm = new FormatSelectorViewModel();
+        var info = Info(
+            new MediaStream("v1080", StreamKind.Video, 1080, "mp4", "avc1", null, 200_000_000, 25),
+            new MediaStream("v720", StreamKind.Video, 720, "mp4", "avc1", null, 100_000_000, 25),
+            new MediaStream("a1", StreamKind.Audio, null, "m4a", null, "mp4a", 32_000_000, null));
+
+        vm.Configure(info, 1080, AudioFormat.M4a);
+        Assert.True(vm.HasSizeNote);
+        Assert.Contains(SizeFormatter.Format(232_000_000), vm.SizeNote);
+
+        vm.SelectedResolution = vm.Resolutions.First(r => r.Height == 720);
+        Assert.Contains(SizeFormatter.Format(132_000_000), vm.SizeNote);
+
+        vm.SelectAudioCommand.Execute(null);
+        Assert.Contains(SizeFormatter.Format(32_000_000), vm.SizeNote);
+
+        vm.Clear();
+        Assert.False(vm.HasSizeNote);
+    }
+
+    [Fact]
+    public void Sans_taille_connue_aucune_note()
+    {
+        var vm = new FormatSelectorViewModel();
+        vm.Configure(Info(Video(720), Audio()), 720, AudioFormat.M4a);
+        Assert.False(vm.HasSizeNote);
     }
 }

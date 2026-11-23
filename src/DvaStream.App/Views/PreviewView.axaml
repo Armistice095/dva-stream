@@ -66,6 +66,10 @@
                    FontSize="14"
                    TextWrapping="Wrap"
                    Foreground="{DynamicResource TextMutedBrush}" />
+        <Button Classes="secondary" HorizontalAlignment="Left" Margin="0,8,0,0"
+                Content="{loc:Loc Preview_Retry}"
+                Command="{Binding RetryCommand}"
+                IsVisible="{Binding CanRetry}" />
       </StackPanel>
 
     </Panel>

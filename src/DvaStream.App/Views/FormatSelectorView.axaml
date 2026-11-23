@@ -51,6 +51,11 @@
                    FontSize="13"
                    TextWrapping="Wrap"
                    Foreground="{DynamicResource WarningBrush}" />
+        <TextBlock Text="{Binding SizeNote}"
+                   IsVisible="{Binding HasSizeNote}"
+                   FontSize="13"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextMutedBrush}" />
       </StackPanel>
 
       <!-- Audio seul : format -->

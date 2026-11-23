@@ -29,6 +29,8 @@ public static class YtDlpErrorMapper
             "network is unreachable", "connection refused", "connection reset", "timed out",
             "ssl:", "certificate verify failed",
         ]),
+        (ErrorKind.DiskFull, ["no space left on device", "not enough space on the disk", "disk full"]),
+        (ErrorKind.FolderNotWritable, ["permission denied", "access is denied", "read-only file system"]),
         (ErrorKind.VideoUnavailable,
         [
             "video is unavailable", "video unavailable", "has been removed", "removed by the uploader",
